@@ -1,0 +1,18 @@
+.post-list-section {
+  display: flex;
+  flex-wrap: wrap;
+	
+	a {
+		height: fit-content;
+	}
+
+  .post-item {
+    margin: 5px;
+
+    .ant-card-cover {
+      img {
+        height: 200px;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.post-detail {
+    padding: 15px 0px 100px 0px;
+    display: flex;
+    justify-content: center;
+
+    .content-wrapper {
+        width: 500px;
+
+        .ant-image {
+            width: 500px;
+        }
+    }
+}
