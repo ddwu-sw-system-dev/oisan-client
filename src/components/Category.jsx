@@ -1,3 +1,5 @@
+import './Category.scss';
+
 const Category = () => {
   const CATEGORY_OPTIONS = [
 		{ 
@@ -25,7 +27,7 @@ const Category = () => {
 	return (
     <div className="category-section">
 			{CATEGORY_OPTIONS.map(({key, title}) => (
-				<div key={key}>
+				<div key={key} className="category-button">
 					{title}
 				</div>
 			))}

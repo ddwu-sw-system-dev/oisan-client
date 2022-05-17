@@ -1,0 +1,11 @@
+.post-list-page {
+  display: flex;
+	justify-content: space-around;
+	margin: 0px 30px;
+
+	.post-list-wrapper {
+		display: flex;
+		justify-content: center;
+		width: 80%;
+	}
+}
