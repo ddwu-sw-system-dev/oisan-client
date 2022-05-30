@@ -17,7 +17,9 @@ const Header = () => {
         <li>
           <input type="text" placeholder="검색어를 입력하세요" />
         </li>
-        <li>로그인</li>
+        <Link to={"/login"}>
+          <li>로그인</li>
+        </Link>
         <li>회원가입</li>
       </ul>
     </div>
