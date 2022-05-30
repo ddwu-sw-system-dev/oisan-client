@@ -13,7 +13,9 @@ const Header = () => {
         <Link to={"/post"}>
           <li>중고</li>
         </Link>
-        <li>경매</li>
+        <Link to={"/auction"}>
+          <li>경매</li>
+        </Link>
         <li>
           <input type="text" placeholder="검색어를 입력하세요" />
         </li>
