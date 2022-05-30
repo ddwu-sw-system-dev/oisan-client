@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import axios from 'axios';
 import Post from "./Post";
 import "./PostList.scss";
 

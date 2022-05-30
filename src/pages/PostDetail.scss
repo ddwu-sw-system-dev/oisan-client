@@ -10,4 +10,23 @@
             width: 500px;
         }
     }
+    .button-wrapper {
+        .ant-btn {
+            position: sticky;
+            top: 150px;
+
+            font-family: 'LeeSeoyun';
+            font-size: 17px;
+
+            background-color: #9BCAEF;
+            border-color: #9BCAEF;
+            margin-left: 30px;
+            color: black;
+            border-radius: .4em;
+        }
+        .ant-btn:hover {
+            background-color: #71bdf8;
+            border-color: #71bdf8;
+        }
+    }
 }
