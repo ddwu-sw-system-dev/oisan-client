@@ -9,6 +9,11 @@ import MyPage from "./pages/MyPage";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionDetail from "./pages/AuctionDetail";
 import Header from "./components/Header";
+import ChatRoomDetail from "./pages/ChatRoomDetail";
+import ChatRoomList from "./pages/ChatRoomList";
+import OipayCharge from "./pages/OiPayCharge";
+import Login from "./pages/Login";
+import OiPayUsage from "./components/OiPayUsage";
 
 function App() {
   return (
@@ -19,6 +24,11 @@ function App() {
         <Route path="/post" element={<PostListPage />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/chatroom/:id" element={<ChatRoomDetail />} />
+        <Route path="/chatroomlist" element={<ChatRoomList />} />
+        <Route path="/oipay/charge" element={<OipayCharge />} />
+        <Route path="/oipay/usage" element={<OiPayUsage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/auction" element={<AuctionListPage />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
       </Routes>
