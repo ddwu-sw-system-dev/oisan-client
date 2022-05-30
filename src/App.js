@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import PostDetail from "./pages/PostDetail";
 import PostListPage from "./pages/PostListPage";
 import MyPage from "./pages/MyPage";
+import AuctionListPage from "./pages/AuctionListPage";
+import AuctionDetail from "./pages/AuctionDetail";
 import Header from "./components/Header";
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         <Route path="/post" element={<PostListPage />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/auction" element={<AuctionListPage />} />
+        <Route path="/auction/:id" element={<AuctionDetail />} />
       </Routes>
     </BrowserRouter>
   );

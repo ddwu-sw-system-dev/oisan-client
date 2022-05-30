@@ -1,0 +1,18 @@
+.auction-list-section {
+  display: flex;
+  flex-wrap: wrap;
+
+  a {
+    height: fit-content;
+  }
+
+  .auction-item {
+    margin: 5px;
+
+    .ant-card-cover {
+      img {
+        height: 200px;
+      }
+    }
+  }
+}
