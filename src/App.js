@@ -14,6 +14,7 @@ import ChatRoomList from "./pages/ChatRoomList";
 import OipayCharge from "./pages/OiPayCharge";
 import Login from "./pages/Login";
 import OiPayUsage from "./components/OiPayUsage";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/oipay/charge" element={<OipayCharge />} />
         <Route path="/oipay/usage" element={<OiPayUsage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/auction" element={<AuctionListPage />} />
         <Route path="/auction/:id" element={<AuctionDetail />} />
       </Routes>
