@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Form, Button, Divider, Input, Radio, Space, InputNumber } from 'antd';
 import { DollarOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import OipayUse from '../components/OiPayUse';
+import OiPayUse from '../components/OiPayUse';
+import "./OiPayCharge.scss";
 
 const OipayCharge = () => {
 	const [form] = Form.useForm();
@@ -11,30 +12,11 @@ const OipayCharge = () => {
 		getFieldValue,
 		validateFields,
 	} = form;
-	const formItemLayout = {
-		labelCol: {
-			span: 4,
-		},
-		wrapperCol: {
-			span: 8,
-		},
-	};
-	
-	const formTailLayout = {
-		labelCol: {
-			span: 4,
-		},
-		wrapperCol: {
-			span: 8,
-			offset: 4,
-		},
-	};
+
 
 	const chargeOipay = async (amount) => {
-		const response = await axios.post('http://localhost:8080/oisan/oipay/use', {
-			userId: 1,
-			oiPayId: 1,
-			type: 1,
+		const response = await axios.post('http://localhost:8080/oipay/charge', {
+			customerId: 6,
 			amount: amount,
 		});
 
@@ -59,7 +41,7 @@ const OipayCharge = () => {
 	};
 
 	return (
-		<div>
+		<div className="oipay-charge-section">
 			<Divider>오이페이 충전하기</Divider>
 			<Form form={form}>
 				<Form.Item
@@ -71,28 +53,30 @@ const OipayCharge = () => {
 						}
 					]}
 				>
-					<Radio.Group>
+					<Radio.Group
+						label="충전 금액"
+					>
 						<Space direction="vertical">
-							<Radio value={1000}>1000</Radio>
-							<Radio value={3000}>3000</Radio>
-							<Radio value={5000}>5000</Radio>
-							<Radio value={10000}>10000</Radio>
-							<Radio value={30000}>30000</Radio>
-							<Radio value={50000}>50000</Radio>
-							<Radio value={100000}>100000</Radio>
-							<Radio value={1000000}>1000000</Radio>
+							<Radio value={1000}>1,000원</Radio>
+							<Radio value={3000}>3,000원</Radio>
+							<Radio value={5000}>5,000원</Radio>
+							<Radio value={10000}>10,000원</Radio>
+							<Radio value={30000}>30,000원</Radio>
+							<Radio value={50000}>50,000원</Radio>
+							<Radio value={100000}>100,000원</Radio>
+							<Radio value={1000000}>1,000,000원</Radio>
 						</Space>
 					</Radio.Group>
 				</Form.Item>
 
-				<Form.Item {...formTailLayout}>
+				<Form.Item>
 					<Button type="primary" onClick={onCheck} icon={<DollarOutlined />}>
 						충전하기
 					</Button>
 				</Form.Item>
 			</Form>
 
-			<OipayUse />
+			{/* <OiPayUse /> */}
 		</div>
 	);
 };

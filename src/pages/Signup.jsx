@@ -1,5 +1,6 @@
-import { Button, Form, Input, Cascader, message } from 'antd';
+import { Button, Form, Input, Cascader, message, Divider } from 'antd';
 import { useEffect, useState } from 'react';
+import "./Signup.scss";
 
 const formItemLayout = {
   labelCol: {
@@ -109,127 +110,126 @@ const Signup = () => {
   };
 
   return (
-    <Form
-      {...formItemLayout}
-      form={form}
-      name="register"
-      // onFinish={onFinish}
-      // initialValues={{
-      //   residence: ['zhejiang', 'hangzhou', 'xihu'],
-      //   prefix: '86',
-      // }}
-      scrollToFirstError
-    >
-      <Form.Item
-        name="email"
-        label="E-mail"
-        rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
-          {
-            required: true,
-            message: 'Please input your E-mail!',
-          },
-        ]}
+    <div className="signup-section">
+      <Divider>회원가입</Divider>
+      <Form
+        {...formItemLayout}
+        form={form}
+        name="register"
+        scrollToFirstError
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="password"
-        label="Password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-        hasFeedback
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="confirm"
-        label="Confirm Password"
-        dependencies={['password']}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: 'Please confirm your password!',
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('password') === value) {
-                return Promise.resolve();
-              }
-
-              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+        <Form.Item
+          name="email"
+          label="이메일"
+          rules={[
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
             },
-          }),
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        name="nickname"
-        label="Nickname"
-        tooltip="What do you want others to call you?"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your nickname!',
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          name="password"
+          label="비밀번호"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item
-        name="phone"
-        label="Phone Number"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your phone number!',
-          },
-          {
-            pattern: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
-            message: 'Please input phone number format!',
-          },
-        ]}
-      >
-        <Input
-          style={{
-            width: '100%',
-          }}
-        />
-      </Form.Item>
+        <Form.Item
+          name="confirm"
+          label="비밀번호 확인"
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
 
-      <Form.Item
-        name="residence"
-        label="거주지"
-        rules={[
-          {
-            type: 'array',
-            required: true,
-            message: 'Please select your residence!',
-          },
-        ]}
-      >
-        <Cascader options={residences} />
-      </Form.Item>
-      <Form.Item {...formTailLayout}>
-        <Button type="primary" onClick={onCheck}>
-          회원가입
-        </Button>
-      </Form.Item>
-    </Form>
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            }),
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="nickname"
+          label="닉네임"
+          tooltip="사용할 별명을 적어주세요"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your nickname!',
+              whitespace: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="phone"
+          label="전화번호"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your phone number!',
+            },
+            {
+              pattern: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+              message: 'Please input phone number format!',
+            },
+          ]}
+        >
+          <Input
+            style={{
+              width: '100%',
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="residence"
+          label="거주지"
+          rules={[
+            {
+              type: 'array',
+              required: true,
+              message: 'Please select your residence!',
+            },
+          ]}
+        >
+          <Cascader options={residences} />
+        </Form.Item>
+        <Form.Item {...formTailLayout}>
+          <Button type="primary" onClick={onCheck}>
+            회원가입
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+    
   );
 };
 

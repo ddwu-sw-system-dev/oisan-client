@@ -1,0 +1,21 @@
+.chat-detail-section {
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 15px 0px 150px 0px;
+    display: flex;
+    justify-content: center;
+
+    .chat-content-section {
+        width: 500px;
+
+        h2 {
+            padding: 10px 5px;
+            text-align: center;
+            border-bottom: 1px solid rgb(168, 168, 168);
+        }
+
+        .message-section {
+            min-height: 400px;
+            margin-bottom: 15px;
+        }
+    }
+}

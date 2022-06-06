@@ -19,6 +19,14 @@
 
     li {
       text-decoration: none;
+      color: black;
+
+      input {
+        color: black;
+      }
+    }
+    li:hover {
+      color: #9BCAEF;
     }
   }
 }

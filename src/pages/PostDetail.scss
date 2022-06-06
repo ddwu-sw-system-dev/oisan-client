@@ -2,31 +2,45 @@
     padding: 15px 0px 100px 0px;
     display: flex;
     justify-content: center;
+    font-family: 'Noto Sans KR', sans-serif;
 
     .content-wrapper {
         width: 500px;
 
+        .ant-divider {
+            margin: 15px 0px;
+        }
+
         .ant-image {
             width: 500px;
         }
-    }
-    .button-wrapper {
-        .ant-btn {
-            position: sticky;
-            top: 150px;
 
-            font-family: 'LeeSeoyun';
-            font-size: 17px;
+        .post-user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
 
-            background-color: #9BCAEF;
-            border-color: #9BCAEF;
-            margin-left: 30px;
-            color: black;
-            border-radius: .4em;
+            .avatar {
+                display: flex;
+                align-items: center;
+                .ant-avatar {
+                    margin-right: 8px;
+                }
+            }
         }
-        .ant-btn:hover {
-            background-color: #71bdf8;
-            border-color: #71bdf8;
+
+        .post-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .post-price {
+            font-size: 17px;
+        }
+
+        .post-desc {
+            margin: 15px 5px;
         }
     }
 }

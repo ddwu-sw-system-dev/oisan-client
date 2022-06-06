@@ -1,0 +1,17 @@
+.Home {
+    .ant-divider {
+        .ant-divider-inner-text {
+            font-family: 'LeeSeoyun';
+            font-size: 20px;
+        }
+    }
+
+    .post-by-category-section {
+        .category-section {
+            flex-direction: row;
+            width: unset;
+            justify-content: space-around;
+            margin: 50px;
+        }
+    }
+}
