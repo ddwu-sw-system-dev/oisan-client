@@ -1,5 +1,6 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Divider } from 'antd';
 import { useEffect, useState } from 'react';
+import "./Login.scss";
 
 const formItemLayout = {
   labelCol: {
@@ -60,48 +61,51 @@ const Login = () => {
   // };
 
   return (
-    <Form form={form} name="dynamic_rule">
-      <Form.Item
-        {...formItemLayout}
-        name="email"
-        label="이메일"
-        rules={[
-          {
-            required: true,
-            message: 'email is required',
-          },
-          {
-            type: 'email',
-            message: '유효한 이메일 형식이 아닙니다.',
-          },
-        ]}
-      >
-        <Input placeholder="이메일을 입력하세요." />
-      </Form.Item>
-      <Form.Item
-        {...formItemLayout}
-        name="password"
-        label="비밀번호"
-        rules={[
-          {
-            required: true,
-            message: 'password is required',
-          },
-          {
-            type: 'string',
-            min: 8,
-            message: '비밀번호는 8자리 이상이여야합니다',
-          },
-        ]}
-      >
-        <Input.Password placeholder="비밀번호를 입력하세요." />
-      </Form.Item>
-      <Form.Item {...formTailLayout}>
-        <Button type="primary" onClick={onCheck}>
-          로그인
-        </Button>
-      </Form.Item>
-    </Form>
+    <div className="login-section">
+      <Divider>로그인</Divider>
+      <Form form={form}>
+        <Form.Item
+          {...formItemLayout}
+          name="email"
+          label="이메일"
+          rules={[
+            {
+              required: true,
+              message: 'email is required',
+            },
+            {
+              type: 'email',
+              message: '유효한 이메일 형식이 아닙니다.',
+            },
+          ]}
+        >
+          <Input placeholder="이메일을 입력하세요." />
+        </Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          name="password"
+          label="비밀번호"
+          rules={[
+            {
+              required: true,
+              message: 'password is required',
+            },
+            {
+              type: 'string',
+              min: 8,
+              message: '비밀번호는 8자리 이상이여야합니다',
+            },
+          ]}
+        >
+          <Input.Password placeholder="비밀번호를 입력하세요." />
+        </Form.Item>
+        <Form.Item {...formTailLayout}>
+          <Button type="primary" onClick={onCheck}>
+            로그인
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

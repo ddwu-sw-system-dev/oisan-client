@@ -2,7 +2,7 @@ import { Button, Checkbox, Form, Input, InputNumber } from 'antd';
 import { DollarOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const OipayUse = (props) => {
+const OiPayUse = (props) => {
 	const {
 		remain,
 		biddingPrice,
@@ -31,11 +31,9 @@ const OipayUse = (props) => {
 		},
 	};
 
-	const useOipay = async (amount) => {
-		const response = await axios.post('http://localhost:8080/oisan/oipay/charge', {
-			userId: 1,
-			oiPayId: 1,
-			type: 0,
+	const spendOipay = async (amount) => {
+		const response = await axios.post('http://localhost:8080/oipay/use', {
+			customerId: 6,
 			amount: amount,
 		});
 
@@ -46,7 +44,11 @@ const OipayUse = (props) => {
 		try {
 			const values = await validateFields();
 
-			console.log('Success:', values); 
+			const amount = getFieldValue(['price']);
+			console.log(amount);
+
+			const response = await spendOipay(amount);
+			console.log('Success:', values, response); 
 
 		} catch (errorInfo) {
 			console.log('Failed:', errorInfo);
@@ -91,4 +93,4 @@ const OipayUse = (props) => {
   );
 };
 
-export default OipayUse;
+export default OiPayUse;

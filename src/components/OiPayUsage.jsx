@@ -1,17 +1,20 @@
 import axios from 'axios';
+import "./OiPayUsage.scss";
 import { useState, useEffect } from 'react';
 import { List, Typography, Divider } from 'antd';
 const { Text } = Typography;
 
+
 const OiPayUsage = () => {
-    const userId = 1;
-    const [loading, setLoading] = useState(true);
+    const customerId = 6; //api로 수정
+
+    // const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
 	const getOipay = async() => {
-		const response = await axios.get(`http://localhost:8080/oisan/oipay/${userId}`);
+		const response = await axios.get(`http://localhost:8080/oipay/${customerId}`);
         setHistory(response.data);	
-        setLoading(false);	
+        // setLoading(false);	
 	};
 
 	useEffect(() => {
@@ -25,9 +28,9 @@ const OiPayUsage = () => {
     };
 
     return (
-        <div>
-            {loading ? "Loading..." : null}
-            {!loading &&
+        <div className="oipay-history-section">
+            {/* {loading ? "Loading..." : null} */}
+            {/* {!loading && */}
                 <div>
                     <List
                     header={<div>오이페이 사용내역</div>}
@@ -46,7 +49,7 @@ const OiPayUsage = () => {
                     )}
                     />
                 </div>
-            }
+            {/* } */}
         </div>
     );
 };

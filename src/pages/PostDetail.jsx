@@ -1,7 +1,7 @@
 import { Image, Tag, Divider } from 'antd';
-import { useParams } from 'react-router-dom';
-import { Button } from 'antd';
-import { WechatOutlined } from '@ant-design/icons';
+import { useParams, Link } from 'react-router-dom';
+import { Button, Avatar } from 'antd';
+import { WechatOutlined, UserOutlined, DollarCircleOutlined } from '@ant-design/icons';
 
 import './PostDetail.scss';
 
@@ -45,23 +45,33 @@ const PostDetail = () => {
 
   return (
     <div className="post-detail">
-      <div className="content-wrapper">
-        <Tag color="geekblue">{currentPost.category}</Tag>
-        <h3>{currentPost.title}</h3>
-				<h3>{currentPost.price}</h3>
-        <Divider />
-        <Image
-          src={currentPost.imgSrc}
-        />
-        <Divider />
-        <p>{currentPost.description}</p>
-      </div>
+			<div className="content-wrapper">
+				<Image
+					src={currentPost.imgSrc}
+				/>
+				<div className="post-user-info">
+					<div className="avatar">
+						<Avatar shape="square" icon={<UserOutlined />} />
+						{currentPost.username}
+					</div>
+					<Button>
+						<Link to={`/chatroom/${currentPost.userId}`}>{currentPost.username} 님과 채팅하기</Link>
+					</Button>
+				</div>
 
-			<div className="button-wrapper">
-				<Button type="primary" icon={<WechatOutlined />} size="large" href={`/chatroom/${currentPost.userId}`}>
-					{currentPost.username} 님과 채팅하기
-				</Button>
-			</div>
+				<Divider />
+
+				<Tag color="geekblue">{currentPost.category}</Tag>
+				<span className="post-title">{currentPost.title}</span>
+
+				<br/>
+
+				<Tag color="default">가격</Tag>
+				<span className="post-price">{currentPost.price} 원</span>
+				
+				<p className="post-desc">{currentPost.description}</p>
+				<Divider />
+      </div>
     </div>
   );
 };

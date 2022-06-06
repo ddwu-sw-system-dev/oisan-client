@@ -1,4 +1,5 @@
 import { Avatar, List } from 'antd';
+import "./ChatRoomList.scss";
 
 const ChatRoomList = () => {
 	

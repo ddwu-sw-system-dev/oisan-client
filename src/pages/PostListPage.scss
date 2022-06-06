@@ -1,11 +1,19 @@
 .post-list-page {
-  display: flex;
+  	display: flex;
 	justify-content: space-around;
 	margin: 0px 30px;
+	font-family: 'Noto Sans KR', sans-serif;
 
 	.post-list-wrapper {
 		display: flex;
 		justify-content: center;
 		width: 80%;
+	}
+
+	.category-section {
+		width: 100px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 }

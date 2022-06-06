@@ -1,43 +1,25 @@
+.speech-bubble {
+    &.sender {
+        display: flex;
+        justify-content: flex-end;
 
-    .speech-bubble {
-        position: relative;
-        background: #b7e0fa;
-        border-radius: .4em;
-        margin: 15px;
-        width: 500px;
-    }
-    
-    .sender {
-        background-color: #b1faff;
-    }
-
-    .sender:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border: 10px solid transparent;
-        border-top-color: #b1faff;
-        border-bottom: 0;
-        border-right: 0;
-        margin-left: -5px;
-        margin-bottom: -10px;
-
+        span {
+            border-radius: .4em;
+            padding: 10px;
+            margin: 5px 10px;
+            background-color: #b1faff;
+        }
     }
 
-    .receiver:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border: 10px solid transparent;
-        border-top-color: #b7e0fa;;
-        border-bottom: 0;
-        border-left: 0;
-        margin-left: -5px;
-        margin-bottom: -10px;
+    &.receiver {
+        display: flex;
+        justify-content: flex-start;
+
+        span {
+            border-radius: .4em;
+            padding: 10px;
+            margin: 5px 10px;
+            background-color: #b7e0fa;
+        }
     }
+}
