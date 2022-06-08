@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Form, Input, Button, InputNumber, Upload, Tag, Tooltip } from "antd";
-// import { TweenOneGroup } from "rc-tween-one";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import "./PostWrite.scss";
+import axios from "axios";
 
 const { TextArea } = Input;
 
@@ -69,6 +69,22 @@ const PostWrite = () => {
     setEditInputIndex(-1);
     setInputValue("");
   };
+
+  const postId = 1; // api로 수정
+
+  const [contents, setContents] = useState([]);
+
+  const editPost = async () => {
+    const response = await axios.get(
+      `http://localhost:8080/post/edit?postId=${postId}`
+    );
+    setContents(response.data);
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    editPost();
+  }, []);
 
   return (
     <div className="post-write-section">
