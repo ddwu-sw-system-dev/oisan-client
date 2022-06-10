@@ -76,7 +76,7 @@ const OipayCharge = () => {
 				</Form.Item>
 			</Form>
 
-			{/* <OiPayUse /> */}
+			<OiPayUse />
 		</div>
 	);
 };

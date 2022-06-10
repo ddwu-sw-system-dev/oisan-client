@@ -45,7 +45,8 @@ const OiPayUsage = () => {
           renderItem={({ type, amount, createAt }) => (
             <List.Item>
               <Typography.Text mark>{type ? "사용" : "충전"}</Typography.Text>
-              {amount}원<Text code>{mSecToDate(createAt)}</Text>
+              <span className="amount-text">{amount.toLocaleString()}원</span>
+              <Text code>{mSecToDate(createAt)}</Text>
             </List.Item>
           )}
         />

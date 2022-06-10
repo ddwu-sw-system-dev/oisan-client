@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const Post = (props) => {
 	const {
 		id,
-		category,
 		title,
 		description,
 		imgSrc
@@ -16,9 +15,9 @@ const Post = (props) => {
 				className="post-item"
 				hoverable
 				style={{ width: 240 }}
-				cover={<img alt="example" src={imgSrc} />}
+				cover={<img alt="가구 사진" src={imgSrc} />}
 			>
-				<Card.Meta title={title} description={`${category} ${description}`} />
+				<Card.Meta title={title} description={description} />
 			</Card>
 		</Link>
 	);

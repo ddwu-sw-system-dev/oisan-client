@@ -1,7 +1,15 @@
 .oipay-history-section {
     font-family: 'Noto Sans KR', sans-serif;
+    padding-bottom: 100px;
 
     .ant-list {
         margin: 5px 50px;
+
+        .ant-list-item {
+            .amount-text {
+                width: 100px;
+                text-align: right;
+            }
+        }
     }
 }
