@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-import axios from 'axios';
 import Post from "./Post";
 import "./PostList.scss";
 
-const PostList = () => {
+const PostList = ({ data }) => {
 	const POST_DATA = [
 		{ 
 			postId: 1, 
@@ -30,14 +28,14 @@ const PostList = () => {
 
 	return (
 		<div className="post-list-section">
-			{POST_DATA.map((item) => (
+			{data.map((item) => (
 				<Post
 					key={item.postId}
 					id={item.postId}
-					category={item.category}
+					category={item.categId}
 					title={item.title}
-					description={item.description}
-					imgSrc={item.imgSrc}
+					description={item.desc}
+					imgSrc={item.imageUrl}
 				/>
 			))}
 		</div>

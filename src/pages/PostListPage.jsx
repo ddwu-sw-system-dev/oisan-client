@@ -1,15 +1,48 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import Category from "../components/Category";
 import PostList from "../components/PostList";
-
 import "./PostListPage.scss";
 
 const PostListPage = () => {
-  return (
+	const [loading, setLoading] = useState(true);
+	const [posts, setPosts] = useState([]);
+
+	const getPostData = async() => {
+		const response = await axios.get(`http://localhost:8080/post/list`);
+    setPosts(response.data);	
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		getPostData();
+	}, []);
+
+	const antIcon = (
+		<LoadingOutlined
+			style={{
+				fontSize: 24,
+			}}
+			spin
+		/>
+	);
+
+	return (
 		<div className="post-list-page">
-			<Category />
-			<div className="post-list-wrapper">
-				<PostList />
-			</div>
+			
+			{loading ? <Spin indicator={antIcon} /> :
+			<>
+				<Category />
+				<div className="post-list-wrapper">
+					<PostList 
+						data={posts}
+					/>
+				</div>
+			</>
+			}
+			
 		</div>
     );
 };
