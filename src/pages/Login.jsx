@@ -4,20 +4,20 @@ import "./Login.scss";
 
 const formItemLayout = {
   labelCol: {
-    span: 4,
+    span: 2,
   },
   wrapperCol: {
-    span: 8,
+    span: 6,
   },
 };
 
 const formTailLayout = {
   labelCol: {
-    span: 4,
+    span: 2,
   },
   wrapperCol: {
-    span: 8,
-    offset: 4,
+    span: 6,
+    offset: 2,
   },
 };
 

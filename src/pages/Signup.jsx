@@ -4,7 +4,7 @@ import "./Signup.scss";
 
 const formItemLayout = {
   labelCol: {
-    span: 4,
+    span: 3,
   },
   wrapperCol: {
     span: 8,
@@ -13,11 +13,11 @@ const formItemLayout = {
 
 const formTailLayout = {
   labelCol: {
-    span: 4,
+    span: 3,
   },
   wrapperCol: {
     span: 8,
-    offset: 4,
+    offset: 3,
   },
 };
 
