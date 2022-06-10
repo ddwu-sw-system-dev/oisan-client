@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import Home from "./pages/Home";
 import PostDetail from "./pages/PostDetail";
 import PostListPage from "./pages/PostListPage";
+import PostWrite from "./pages/PostWrite";
 import MyPage from "./pages/MyPage";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionDetail from "./pages/AuctionDetail";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/post" element={<PostListPage />} />
         <Route path="/post/:id" element={<PostDetail />} />
+        <Route path="/post/write" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/chatroom/:id" element={<ChatRoomDetail />} />
         <Route path="/chatroomlist" element={<ChatRoomList />} />
