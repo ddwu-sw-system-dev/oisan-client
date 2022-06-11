@@ -1,14 +1,9 @@
 import "./MyPage.scss";
 import { Card, List, Typography, Divider, Tabs, Pagination } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-
-const data = [
-  "Racing car sprays burning fuel into crowd.",
-  "Japanese princess to wed commoner.",
-  "Australian walks 100km after outback crash.",
-  "Man charged over missing wedding girl.",
-  "Los Angeles battles huge wildfires.",
-];
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -20,6 +15,49 @@ const gridStyle = {
 };
 
 function MyPage() {
+  const [customer, setCustomer] = useState();
+  const [posts, setPosts] = useState([]);
+
+  const [totalPage, setTotalPage] = useState(0);
+  const [current, setCurrent] = useState(1);
+  const [minIndex, setMinIndex] = useState(0);
+  const [maxIndex, setMaxIndex] = useState(0);
+  const pageSize = 10;
+
+  const getPostList = async () => {
+    if (customer) {
+      const response = await axios.get(
+        `http://localhost:8080/post/list/${customer.customerId}`
+      );
+      setPosts(response.data);
+      setTotalPage(response.data.length / pageSize);
+      setMinIndex(0);
+      setMaxIndex(pageSize);
+    }
+  };
+
+  const handleChange = (page) => {
+    setCurrent(page);
+    setMinIndex((page - 1) * pageSize);
+    setMaxIndex(page * pageSize);
+  };
+
+  const getCategoryName = async (categId) => {
+    const response = await axios.get(
+      `http://localhost:8080/post/category/${categId}`
+    );
+    console.log("response", response.data);
+    return response.data;
+  };
+
+  useEffect(() => {
+    setCustomer(JSON.parse(sessionStorage.getItem("customer")));
+  }, []);
+
+  useEffect(() => {
+    getPostList();
+  }, [customer]);
+
   return (
     <div className="mypage-section">
       <div className="mypage-profile">
@@ -33,42 +71,51 @@ function MyPage() {
           }
           actions={[<EditOutlined key="edit" />]}
         >
-          <Meta title="닉네임" description="헬로 나는 프로 가구 판매꾼" />
+          <Meta
+            title={!customer ? "default" : customer.customerName}
+            description={!customer ? "default" : customer.nickname}
+          />
         </Card>
       </div>
       <div className="mypage-list">
         <Tabs defaultActiveKey="1" centered>
           <TabPane tab="나의 글" key="1">
             <div className="mypage-post">
-              <Divider orientation="left">판매 중</Divider>
               <List
                 footer={
                   <div>
-                    <Pagination defaultCurrent={1} total={50} />
+                    <Pagination
+                      defaultCurrent={1}
+                      pageSize={pageSize}
+                      current={current}
+                      total={posts.length}
+                      onChange={handleChange}
+                    />
                   </div>
                 }
                 bordered
-                dataSource={data}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Typography.Text mark>[ITEM]</Typography.Text> {item}
-                  </List.Item>
+                dataSource={posts.map(
+                  (post, index) => index >= minIndex && index < maxIndex && post
                 )}
-              />
-              <Divider orientation="left">거래 완료</Divider>
-              <List
-                footer={
-                  <div>
-                    <Pagination defaultCurrent={1} total={50} />
-                  </div>
-                }
-                bordered
-                dataSource={data}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Typography.Text mark>[ITEM]</Typography.Text> {item}
-                  </List.Item>
-                )}
+                renderItem={(post) => {
+                  if (post) {
+                    return (
+                      <List.Item>
+                        {post.status === 1 ? (
+                          <Typography.Text type="success">
+                            [판매중]
+                          </Typography.Text>
+                        ) : (
+                          <Typography.Text type="secondary">
+                            [판매완료]
+                          </Typography.Text>
+                        )}
+                        <Typography.Text>[카테고리]</Typography.Text>
+                        <Link to={`/post/${post.postId}`}>{post.title}</Link>
+                      </List.Item>
+                    );
+                  }
+                }}
               />
             </div>
           </TabPane>

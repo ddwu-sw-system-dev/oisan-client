@@ -10,3 +10,20 @@
 .mypage-list {
   width: 45rem;
 }
+
+.mypage-profile {
+  margin-top: 45px;
+}
+
+.ant-list-item {
+  display: flex;
+  justify-content: left;
+
+  & > * {
+    width: 80px;
+  }
+
+  & > :nth-child(3) {
+    width: auto;
+  }
+}
