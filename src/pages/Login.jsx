@@ -1,6 +1,7 @@
-import { Button, Checkbox, Form, Input, Divider } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Checkbox, Form, Input, Divider } from "antd";
+import { useEffect, useState } from "react";
 import "./Login.scss";
+import axios from "axios";
 
 const formItemLayout = {
   labelCol: {
@@ -21,23 +22,43 @@ const formTailLayout = {
   },
 };
 
-
 const Login = () => {
   const [form] = Form.useForm();
+  const { getFieldValue, validateFields } = form;
 
+  const loginUser = async (email, password) => {
+    console.log(email, password);
+
+    await axios
+      .post("http://localhost:8080/customers/login", {
+        email: email,
+        pw: password,
+      })
+      .then((response) => {
+        console.log("response", JSON.stringify(response.data));
+        console.log("type", typeof response.data);
+
+        sessionStorage.setItem("customer", JSON.stringify(response.data));
+        document.location.href = "/";
+      });
+  };
 
   // TODO: 로그인 버튼 누르면 sumbit 함수에서 onCheck하고 true면 로그인 하는 식으로?
   const onCheck = async () => {
     try {
-      const values = await form.validateFields();
-      console.log('Success:', values);
-      //로그인 하는 부분 
+      const values = await validateFields();
 
+      const email = getFieldValue(["email"]);
+      const password = getFieldValue(["password"]);
+
+      const response = await loginUser(email, password);
+
+      console.log("Success:", values, response);
+      //로그인 하는 부분
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
+      console.log("Failed:", errorInfo);
       //실패 시 메시지 띄우기~
     }
-
   };
 
   // const validation = () => new Promise((resolve) => {
@@ -71,11 +92,11 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: 'email is required',
+              message: "email is required",
             },
             {
-              type: 'email',
-              message: '유효한 이메일 형식이 아닙니다.',
+              type: "email",
+              message: "유효한 이메일 형식이 아닙니다.",
             },
           ]}
         >
@@ -88,12 +109,12 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: 'password is required',
+              message: "password is required",
             },
             {
-              type: 'string',
-              min: 8,
-              message: '비밀번호는 8자리 이상이여야합니다',
+              type: "string",
+              min: 4,
+              message: "비밀번호는 4자리 이상이여야합니다",
             },
           ]}
         >
