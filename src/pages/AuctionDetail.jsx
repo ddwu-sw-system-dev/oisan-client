@@ -1,73 +1,68 @@
-import { Image, Tag, Divider, Button } from "antd";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Image, Tag, Divider, Button, Avatar } from "antd";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { UserOutlined } from '@ant-design/icons';
 
 const AuctionDetail = () => {
   const { id } = useParams();
 
-  const AUCTION_DATA = [
-    {
-      auctionId: 1,
-      category: "책상",
-      title: "5년된 책상",
-      description: "책상은 책상책상",
-      imgSrc:
-        "https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Fdailylife%2F50e606b8f8ff41628b4440ca2a0017ef.jpg",
-    },
-    {
-      auctionId: 2,
-      category: "의자",
-      title: "중고 의자 팔아요~^^ 한 번 썼읍니다.",
-      description: "중고의자 팝니다. 검은색. 연식 3년.",
-      imgSrc:
-        "https://image.hanssem.com/hsimg/gds/368/773/773575_A1.jpg?v=20210624133711",
-    },
-    {
-      auctionId: 3,
-      category: "침대",
-      title: "2년된 침대",
-      description: "푹신푹신 합니다.. 만오처넌",
-      imgSrc:
-        "https://image.ajunews.com/content/image/2021/12/24/20211224145900660054.jpg",
-    },
-  ];
+  const [auction, setAuction] = useState([]);
 
-  const currentAuction = AUCTION_DATA.filter(
-    (auction) => auction.auctionId === parseInt(id)
-  )[0];
+  const getAuctionData = async() => {
+		const response = await axios.get(`http://localhost:8080/auction/${id}`);
+		setAuction(response.data);
+  };
+
+  useEffect(() => {
+		getAuctionData();
+  }, []);
+
+  const changeDateFormat = (date) => {
+    if (date) {
+      return date.replace('T', ' ').substring(0, 19);
+    }
+    return date;
+  }
+
+  const convertCategory = (categoryId) => {
+    const categList = ['모두', '책상', '의자', '침대', '서랍'];
+    return categList[categoryId];
+  };
 
   return (
     <StyledRoot>
       <StyledImage>
-        <Image className="auction-detail-image" src={currentAuction.imgSrc} />
+        <Image className="auction-detail-image" src={auction.imageUrl} />
       </StyledImage>
       <div>
-        <Tag color="geekblue">{currentAuction.category}</Tag>
-        <h3>{currentAuction.title}</h3>
+        <Tag color="geekblue">{convertCategory(auction.categoryId)}</Tag>
+        <h3>{auction.title}</h3>
+				작성자 : {auction.customer && auction.customer.nickname}
+        <p>크기 : {auction.furniture && `W${auction.furniture.width} * D${auction.furniture.depth} * H${auction.furniture.height}`}</p>
         <Divider />
-        <p>{currentAuction.description}</p>
+        <p>{auction.desc}</p>
         <Divider />
         <StyledTable>
+          <tbody>
           <tr>
             <td>시작일</td>
-            <td>06/01 00:00</td>
+            <td>{changeDateFormat(auction.createAt)}</td>
           </tr>
           <tr>
-            <td>자동 할인 시간</td>
-            <td>4시간</td>
-          </tr>
-          <tr>
-            <td>경매 단위</td>
-            <td>1,000</td>
+            <td>마감일</td>
+            <td>{changeDateFormat(auction.closingTime)}</td>
           </tr>
           <tr>
             <td>시작 가격</td>
-            <td>15,000</td>
+            <td>{auction.startBid}</td>
           </tr>
           <tr>
             <td>현재 가격</td>
-            <td>10,000</td>
+            <td>{auction.winningBid}</td>
           </tr>
+          </tbody>
         </StyledTable>
         <Divider />
         <Button>구매하기</Button>
