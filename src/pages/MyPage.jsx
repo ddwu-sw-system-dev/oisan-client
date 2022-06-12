@@ -42,12 +42,9 @@ function MyPage() {
     setMaxIndex(page * pageSize);
   };
 
-  const getCategoryName = async (categId) => {
-    const response = await axios.get(
-      `http://localhost:8080/post/category/${categId}`
-    );
-    console.log("response", response.data);
-    return response.data;
+  const convertCategory = (categoryId) => {
+    const categList = ["모두", "책상", "의자", "침대", "서랍"];
+    return categList[categoryId];
   };
 
   useEffect(() => {
@@ -110,7 +107,9 @@ function MyPage() {
                             [판매완료]
                           </Typography.Text>
                         )}
-                        <Typography.Text>[카테고리]</Typography.Text>
+                        <Typography.Text mark>
+                          {convertCategory(post.categId)}
+                        </Typography.Text>
                         <Link to={`/post/${post.postId}`}>{post.title}</Link>
                       </List.Item>
                     );
@@ -120,8 +119,6 @@ function MyPage() {
             </div>
           </TabPane>
           <TabPane tab="좋아요" key="2">
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
