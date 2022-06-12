@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Divider } from "antd";
+import { Button, Checkbox, Form, Input, Divider, message } from "antd";
 import { useEffect, useState } from "react";
 
 import "./Login.scss";
@@ -37,7 +37,6 @@ const Login = () => {
       })
       .then((response) => {
         console.log("response", JSON.stringify(response.data));
-        console.log("type", typeof response.data);
 
         sessionStorage.setItem("customer", JSON.stringify(response.data));
         document.location.href = "/";
@@ -58,6 +57,7 @@ const Login = () => {
       //로그인 하는 부분
     } catch (errorInfo) {
       console.log("Failed:", errorInfo);
+      message.error("로그인에 실패하였습니다");
       //실패 시 메시지 띄우기~
     }
   };
