@@ -8,7 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem("customer") !== null) {
-      console.log("header", JSON.parse(sessionStorage.getItem("customer")));
+      // console.log("header", JSON.parse(sessionStorage.getItem("customer")));
       setCustomer(JSON.parse(sessionStorage.getItem("customer")));
       setIsLogin(true);
     }

@@ -7,6 +7,7 @@ import PostDetail from "./pages/PostDetail";
 import PostListPage from "./pages/PostListPage";
 import PostWrite from "./pages/PostWrite";
 import MyPage from "./pages/MyPage";
+import MyInfo from "./pages/MyInfo";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionDetail from "./pages/AuctionDetail";
 import Header from "./components/Header";
@@ -27,6 +28,7 @@ function App() {
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/post/write" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/myInfo/edit" element={<MyInfo />} />
         <Route path="/chatroom/:id" element={<ChatRoomDetail />} />
         <Route path="/chatroomlist" element={<ChatRoomList />} />
         <Route path="/oipay/charge" element={<OipayCharge />} />

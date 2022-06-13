@@ -66,7 +66,11 @@ function MyPage() {
               src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
             />
           }
-          actions={[<EditOutlined key="edit" />]}
+          actions={[
+            <Link to={`/myInfo/edit`}>
+              <EditOutlined key="edit" />
+            </Link>,
+          ]}
         >
           <Meta
             title={!customer ? "default" : customer.customerName}
