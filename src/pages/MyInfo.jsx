@@ -101,7 +101,7 @@ const residences = [
 
 function MyInfo() {
   const [form] = Form.useForm();
-  const { getFieldValue, validateFields } = form;
+  // const { setFieldsValue, getFieldValue, validateFields } = form;
 
   const [customer, setCustomer] = useState();
 
@@ -112,15 +112,78 @@ function MyInfo() {
     }
   }, []);
 
+  useEffect(() => {
+    if (customer) {
+      console.log("customer", customer);
+
+      form.setFieldsValue({
+        customerName: customer.customerName,
+        email: customer.email,
+        passwrod: customer.pw,
+        nickname: customer.nickname,
+        phone: customer.phone,
+        residence: customer.address.split(" "),
+      });
+    }
+  }, [customer]);
+
+  const editUserInfo = async (password, residence, phone, nickname) => {
+    await axios
+      .put("http://localhost:8080/customers/edit", {
+        customerId: customer.customerId,
+        customerName: customer.customerName,
+        email: customer.email,
+        pw: password,
+        address: residence,
+        phone: phone,
+        nickname: nickname,
+      })
+      .then((response) => {
+        console.log(response.data);
+        console.log("response", JSON.stringify(response.data));
+
+        sessionStorage.removeItem("customer");
+        sessionStorage.setItem("customer", JSON.stringify(response.data));
+
+        document.location.href = "/mypage";
+      });
+  };
+
+  const onCheck = async () => {
+    try {
+      const values = await form.validateFields();
+
+      const password = form.getFieldValue(["password"]);
+      const nickname = form.getFieldValue(["nickname"]);
+      const phone = form.getFieldValue(["phone"]);
+      const residence = form.getFieldValue(["residence"]);
+
+      const response = await editUserInfo(
+        password,
+        `${residence[0]} ${residence[1]}`,
+        phone,
+        nickname
+      );
+
+      console.log("Success:", values, response);
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
+      message.error("내 정보 수정에 실패하였습니다");
+    }
+  };
+
   return (
     <div className="login-section">
       <Divider>내 정보 수정</Divider>
       <Form form={form}>
-        <Form.Item {...formItemLayout} name="name" label="이름">
+        <Form.Item {...formItemLayout} name="customerName" label="이름">
           <Input disabled />
         </Form.Item>
         <Form.Item {...formItemLayout} name="email" label="이메일">
-          <Input disabled />
+          <Input
+            placeholder={!customer ? "default" : customer.email}
+            disabled
+          />
         </Form.Item>
         <Form.Item
           {...formItemLayout}
@@ -217,7 +280,9 @@ function MyInfo() {
           <Cascader options={residences} />
         </Form.Item>
         <Form.Item {...formTailLayout}>
-          <Button type="primary">수정</Button>
+          <Button type="primary" onClick={onCheck}>
+            수정
+          </Button>
         </Form.Item>
       </Form>
     </div>
