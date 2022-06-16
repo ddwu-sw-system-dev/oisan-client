@@ -1,24 +1,31 @@
-import { Button, Form, Input, Cascader, message, Divider } from "antd";
-import { useEffect, useState } from "react";
-import "./Signup.scss";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Divider,
+  message,
+  Cascader,
+} from "antd";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const formItemLayout = {
   labelCol: {
-    span: 3,
+    span: 2,
   },
   wrapperCol: {
-    span: 8,
+    span: 6,
   },
 };
 
 const formTailLayout = {
   labelCol: {
-    span: 3,
+    span: 2,
   },
   wrapperCol: {
-    span: 8,
-    offset: 3,
+    span: 6,
+    offset: 2,
   },
 };
 
@@ -92,109 +99,49 @@ const residences = [
   },
 ];
 
-const Signup = () => {
+function MyInfo() {
   const [form] = Form.useForm();
   const { getFieldValue, validateFields } = form;
 
-  const createUser = async (
-    name,
-    email,
-    password,
-    residence,
-    phone,
-    nickname
-  ) => {
-    await axios
-      .post("http://localhost:8080/customers/create", {
-        customerName: name,
-        email: email,
-        pw: password,
-        address: residence,
-        phone: phone,
-        nickname: nickname,
-      })
-      .then((response) => {
-        console.log(response.data);
-        document.location.href = "/login";
-      });
-  };
+  const [customer, setCustomer] = useState();
 
-  const onCheck = async () => {
-    try {
-      const values = await validateFields();
-
-      const name = getFieldValue(["name"]);
-      const email = getFieldValue(["email"]);
-      const password = getFieldValue(["password"]);
-      const nickname = getFieldValue(["nickname"]);
-      const phone = getFieldValue(["phone"]);
-      const residence = getFieldValue(["residence"]);
-
-      const response = await createUser(
-        name,
-        email,
-        password,
-        `${residence[0]} ${residence[1]}`,
-        phone,
-        nickname
-      );
-
-      console.log("Success:", values, response);
-    } catch (errorInfo) {
-      console.log("Failed:", errorInfo);
-      message.error("회원가입에 실패하였습니다");
+  useEffect(() => {
+    if (sessionStorage.getItem("customer") !== null) {
+      console.log("myinfo", JSON.parse(sessionStorage.getItem("customer")));
+      setCustomer(JSON.parse(sessionStorage.getItem("customer")));
     }
-  };
+  }, []);
 
   return (
-    <div className="signup-section">
-      <Divider>회원가입</Divider>
-      <Form {...formItemLayout} form={form} name="register" scrollToFirstError>
-        <Form.Item
-          name="name"
-          label="이름"
-          rules={[
-            {
-              required: true,
-              message: "Please input your name!",
-            },
-          ]}
-        >
-          <Input />
+    <div className="login-section">
+      <Divider>내 정보 수정</Divider>
+      <Form form={form}>
+        <Form.Item {...formItemLayout} name="name" label="이름">
+          <Input disabled />
         </Form.Item>
-
-        <Form.Item
-          name="email"
-          label="이메일"
-          rules={[
-            {
-              type: "email",
-              message: "The input is not valid E-mail!",
-            },
-            {
-              required: true,
-              message: "Please input your E-mail!",
-            },
-          ]}
-        >
-          <Input />
+        <Form.Item {...formItemLayout} name="email" label="이메일">
+          <Input disabled />
         </Form.Item>
-
         <Form.Item
+          {...formItemLayout}
           name="password"
           label="비밀번호"
           rules={[
             {
               required: true,
-              message: "Please input your password!",
+              message: "password is required",
+            },
+            {
+              type: "string",
+              min: 4,
+              message: "비밀번호는 4자리 이상이여야합니다",
             },
           ]}
-          hasFeedback
         >
-          <Input.Password />
+          <Input.Password placeholder="비밀번호를 입력하세요." />
         </Form.Item>
-
         <Form.Item
+          {...formItemLayout}
           name="confirm"
           label="비밀번호 확인"
           dependencies={["password"]}
@@ -219,8 +166,8 @@ const Signup = () => {
         >
           <Input.Password />
         </Form.Item>
-
         <Form.Item
+          {...formItemLayout}
           name="nickname"
           label="닉네임"
           tooltip="사용할 별명을 적어주세요"
@@ -234,8 +181,8 @@ const Signup = () => {
         >
           <Input />
         </Form.Item>
-
         <Form.Item
+          {...formItemLayout}
           name="phone"
           label="전화번호"
           rules={[
@@ -255,8 +202,8 @@ const Signup = () => {
             }}
           />
         </Form.Item>
-
         <Form.Item
+          {...formItemLayout}
           name="residence"
           label="거주지"
           rules={[
@@ -270,13 +217,11 @@ const Signup = () => {
           <Cascader options={residences} />
         </Form.Item>
         <Form.Item {...formTailLayout}>
-          <Button type="primary" onClick={onCheck}>
-            회원가입
-          </Button>
+          <Button type="primary">수정</Button>
         </Form.Item>
       </Form>
     </div>
   );
-};
+}
 
-export default Signup;
+export default MyInfo;

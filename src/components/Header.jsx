@@ -8,7 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem("customer") !== null) {
-      console.log(JSON.parse(sessionStorage.getItem("customer")));
+      // console.log("header", JSON.parse(sessionStorage.getItem("customer")));
       setCustomer(JSON.parse(sessionStorage.getItem("customer")));
       setIsLogin(true);
     }
@@ -38,7 +38,9 @@ const Header = () => {
         </li>
         {isLogin ? (
           <>
-            <li>{customer.customerName}님 반갑습니다!</li>
+            <Link to={"/mypage"}>
+              <li>{customer.customerName}님 반갑습니다!</li>
+            </Link>
             <li onClick={onLogout}>로그아웃</li>
           </>
         ) : (
