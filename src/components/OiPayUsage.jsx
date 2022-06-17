@@ -2,11 +2,11 @@ import axios from "axios";
 import "./OiPayUsage.scss";
 import { useState, useEffect } from "react";
 import { List, Typography, Divider, Pagination } from "antd";
-import useExist from "../hooks/useExist";
+import useAuth from "../hooks/useExist";
 const { Text } = Typography;
 
 const OiPayUsage = () => {
-  const { loginCustomer } = useExist();
+  const [customer, setCustomer] = useState();
 
   const [totalPage, setTotalPage] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -18,17 +18,17 @@ const OiPayUsage = () => {
   const [history, setHistory] = useState([]);
 
   const getOipay = async () => {
-    // if (loginCustomer) {
-    // console.log(loginCustomer.customerId);
-
-    const response = await axios.get(`http://localhost:8080/oipay/6`);
-    console.log(response.data);
-    setHistory(response.data);
-    // setLoading(false);
-    setTotalPage(response.data.length / pageSize);
-    setMinIndex(0);
-    setMaxIndex(pageSize);
-    // }
+    if (customer) {
+      const response = await axios.get(
+        `http://localhost:8080/oipay/${customer.customerId}`
+      );
+      console.log(response.data);
+      setHistory(response.data);
+      // setLoading(false);
+      setTotalPage(response.data.length / pageSize);
+      setMinIndex(0);
+      setMaxIndex(pageSize);
+    }
   };
 
   const handleChange = (page) => {
@@ -38,8 +38,12 @@ const OiPayUsage = () => {
   };
 
   useEffect(() => {
-    getOipay();
+    setCustomer(JSON.parse(sessionStorage.getItem("customer")));
   }, []);
+
+  useEffect(() => {
+    getOipay();
+  }, [customer]);
 
   const mSecToDate = (milliseconds) => {
     const date = new Date(milliseconds);
@@ -77,9 +81,11 @@ const OiPayUsage = () => {
             if (item) {
               return (
                 <List.Item>
-                  <Typography.Text mark>
-                    {item.type ? "사용" : "충전"}
-                  </Typography.Text>
+                  {item.type ? (
+                    <Typography.Text type="secondary">[사용]</Typography.Text>
+                  ) : (
+                    <Typography.Text type="success">[충전]</Typography.Text>
+                  )}
                   <span className="amount-text">{item.amount}원</span>
                   <Text code>{mSecToDate(item.createAt)}</Text>
                 </List.Item>
