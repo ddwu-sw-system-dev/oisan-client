@@ -27,9 +27,23 @@ const PostDetail = () => {
   };
 
 	const getChatRoomData = async () => {
-		const response = await axios.get(`http://localhost:8080/chatRooms/find/${post.customer.customerId}/${loginCustomer.customerId}`);
-		setChatRoom(response.data);
-		// console.log("chatRoom:", response.data);
+		if (!chatRoom) {
+			const response = await axios.get(`http://localhost:8080/chatRooms/find/${post.customer.customerId}/${loginCustomer.customerId}`);
+		
+			console.log("chatRoom:", response.data);
+			
+			if (!response.data) {
+				if(post.customer.customerId !== loginCustomer.customerId) {
+					const createdRoom = await axios.post(`http://localhost:8080/chatRooms/create/${post.customer.customerId}/${loginCustomer.customerId}`);
+					setChatRoom(createdRoom.data);
+					console.log("created chatRoom:", createdRoom.data);
+				}
+				return;
+			}
+			else {
+				setChatRoom(response.data);
+			}
+		}
 	}
 
   useEffect(() => {
@@ -80,8 +94,8 @@ const PostDetail = () => {
   };
 
   const onClickChatButton = () => {
-    if (sessionStorage.getItem("customer") !== null) {
-      navigate(`/chatroom/${chatRoom.chatRoomId}`);
+    if (sessionStorage.getItem("customer") !== null && chatRoom) {
+      navigate(`/chatroom/${chatRoom.chatRoomId}/${post.customer.nickname}`);
     } else {
       message.warning("채팅은 로그인 후에 이용할 수 있습니다.");
       // navigate(-1);
@@ -113,7 +127,7 @@ const PostDetail = () => {
               {post.customer.nickname}
             </div>
             <Button onClick={onClickChatButton}>
-              {loginCustomer && post.customer.customerId == loginCustomer.customerId ? null : <span>{post.customer.nickname} 님과 채팅하기</span>}
+              {loginCustomer && post.customer.customerId === loginCustomer.customerId ? null : <span>{post.customer.nickname} 님과 채팅하기</span>}
             </Button>
           </div>
 

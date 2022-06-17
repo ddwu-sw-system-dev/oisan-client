@@ -29,7 +29,7 @@ function App() {
         <Route path="/post/write/:id" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/myInfo/edit" element={<MyInfo />} />
-        <Route path="/chatroom/:id" element={<ChatRoomDetail />} />
+        <Route path="/chatroom/:id/:name" element={<ChatRoomDetail />} />
         <Route path="/chatroomlist" element={<ChatRoomList />} />
         <Route path="/oipay/charge" element={<OipayCharge />} />
         <Route path="/oipay/usage" element={<OiPayUsage />} />

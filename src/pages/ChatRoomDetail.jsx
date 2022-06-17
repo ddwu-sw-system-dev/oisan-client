@@ -10,7 +10,7 @@ const { Search } = Input;
 
 const ChatRoomDetail = () => {
 	const navigate = useNavigate();
-	const { id } = useParams(); // chatRoomId
+	const { id, name } = useParams(); // chatRoomId
 	const [loginUser, setLoginUser] = useState();
 	const [receiverId, setReceiverId] = useState();
 	const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ const ChatRoomDetail = () => {
 		
 		// response 응답코드보고 성공하면
 		if(response.data) {
-			navigate(`/chatroom/${id}`);
+			navigate(`/chatroom/${id}/${name}`);
 			window.location.reload();
 		}
 	};
@@ -93,7 +93,7 @@ const ChatRoomDetail = () => {
     <div className="chat-detail-section">
 			{loading ? <Spin indicator={antIcon} /> :
 				<div className="chat-content-section">
-					{/* <h2>누구누구와의 채팅방</h2> */}
+					{name ? <h2>{name}</h2> : null}
 					{message_section}
 					<Search
 						placeholder="채팅을 입력하세요"
