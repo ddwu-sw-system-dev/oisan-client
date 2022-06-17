@@ -68,7 +68,14 @@ const OiPayUsage = () => {
               />
             </div>
           }
-          header={<div>오이페이 사용내역</div>}
+          header={
+            <div className="oipay-history-title">
+              <p>오이페이 사용내역</p>
+              <Typography.Text type="danger">
+                [잔액] {customer ? customer.oiPay : null}
+              </Typography.Text>
+            </div>
+          }
           bordered
           dataSource={history
             .map((item, index) => index >= minIndex && index < maxIndex && item)
