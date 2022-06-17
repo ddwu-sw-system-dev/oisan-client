@@ -13,38 +13,44 @@ const PostDetail = () => {
 
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState([]);
-	const [chatRoom, setChatRoom] = useState();
+  const [chatRoom, setChatRoom] = useState();
 
   const [loginCustomer, setloginCustomer] = useState();
   const [myPost, setMyPost] = useState(false);
 
+  const [complete, setComplete] = useState(1);
+
   const getPostData = async () => {
     const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
     setPost(response.data);
+    setComplete(response.data.status);
     setLoading(false);
     //TODO: api에서 customer 정보가 추가되면 수정해야하는 부분 있음
     // console.log(response.data);
   };
 
-	const getChatRoomData = async () => {
-		if (!chatRoom) {
-			const response = await axios.get(`http://localhost:8080/chatRooms/find/${post.customer.customerId}/${loginCustomer.customerId}`);
-		
-			console.log("chatRoom:", response.data);
-			
-			if (!response.data) {
-				if(post.customer.customerId !== loginCustomer.customerId) {
-					const createdRoom = await axios.post(`http://localhost:8080/chatRooms/create/${post.customer.customerId}/${loginCustomer.customerId}`);
-					setChatRoom(createdRoom.data);
-					console.log("created chatRoom:", createdRoom.data);
-				}
-				return;
-			}
-			else {
-				setChatRoom(response.data);
-			}
-		}
-	}
+  const getChatRoomData = async () => {
+    if (!chatRoom) {
+      const response = await axios.get(
+        `http://localhost:8080/chatRooms/find/${post.customer.customerId}/${loginCustomer.customerId}`
+      );
+
+      // console.log("chatRoom:", response.data);
+
+      if (!response.data) {
+        if (post.customer.customerId !== loginCustomer.customerId) {
+          const createdRoom = await axios.post(
+            `http://localhost:8080/chatRooms/create/${post.customer.customerId}/${loginCustomer.customerId}`
+          );
+          setChatRoom(createdRoom.data);
+          console.log("created chatRoom:", createdRoom.data);
+        }
+        return;
+      } else {
+        setChatRoom(response.data);
+      }
+    }
+  };
 
   useEffect(() => {
     setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
@@ -57,19 +63,16 @@ const PostDetail = () => {
       loginCustomer &&
       post.customer.customerId === loginCustomer.customerId
     ) {
-      console.log(post.customer.customerId === loginCustomer.customerId);
+      // console.log(post.customer.customerId === loginCustomer.customerId);
       setMyPost(true);
     }
   }, [post, loginCustomer]);
 
-	useEffect(() => {
-		if (
-			post.customer &&
-      loginCustomer
-    ) {
-			getChatRoomData();
-		}
-	}, [post, loginCustomer]);
+  useEffect(() => {
+    if (post.customer && loginCustomer) {
+      getChatRoomData();
+    }
+  }, [post, loginCustomer]);
 
   const antIcon = (
     <LoadingOutlined
@@ -91,6 +94,24 @@ const PostDetail = () => {
   const convertCategory = (categoryId) => {
     const categList = ["모두", "책상", "의자", "침대", "서랍"];
     return categList[categoryId];
+  };
+
+  const completeButton = async () => {
+    await axios
+      .put(`http://localhost:8080/post/complete?postId=${id}`)
+      .then((response) => {
+        console.log(response);
+        setComplete(0);
+      });
+  };
+
+  const openButton = async () => {
+    await axios
+      .put(`http://localhost:8080/post/open?postId=${id}`)
+      .then((response) => {
+        console.log(response);
+        setComplete(1);
+      });
   };
 
   const onClickChatButton = () => {
@@ -126,9 +147,21 @@ const PostDetail = () => {
               <Avatar shape="square" icon={<UserOutlined />} />
               {post.customer.nickname}
             </div>
-            <Button onClick={onClickChatButton}>
-              {loginCustomer && post.customer.customerId === loginCustomer.customerId ? null : <span>{post.customer.nickname} 님과 채팅하기</span>}
-            </Button>
+            {console.log("complete", complete)}
+            {loginCustomer &&
+            post.customer.customerId === loginCustomer.customerId ? (
+              complete ? (
+                <Button type="primary" onClick={completeButton}>
+                  거래완료로 변경
+                </Button>
+              ) : (
+                <Button onClick={openButton}>거래중으로 변경</Button>
+              )
+            ) : (
+              <Button onClick={onClickChatButton}>
+                <span>{post.customer.nickname} 님과 채팅하기</span>
+              </Button>
+            )}
           </div>
 
           <Divider />
