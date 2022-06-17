@@ -73,7 +73,7 @@ const PostDetail = () => {
   };
 
   const editPost = () => {
-    navigate(`/post/write/${id}`);
+    navigate(`/post/edit/${id}`);
   };
 
   const deletePost = async () => {

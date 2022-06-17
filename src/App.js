@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import PostDetail from "./pages/PostDetail";
 import PostListPage from "./pages/PostListPage";
 import PostWrite from "./pages/PostWrite";
+import PostEdit from "./pages/PostEdit";
 import MyPage from "./pages/MyPage";
 import MyInfo from "./pages/MyInfo";
 import AuctionListPage from "./pages/AuctionListPage";
@@ -26,7 +27,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/post" element={<PostListPage />} />
         <Route path="/post/:id" element={<PostDetail />} />
-        <Route path="/post/write/:id" element={<PostWrite />} />
+        <Route path="/post/write" element={<PostWrite />} />
+        <Route path="/post/edit/:id" element={<PostEdit />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/myInfo/edit" element={<MyInfo />} />
         <Route path="/chatroom/:id" element={<ChatRoomDetail />} />
