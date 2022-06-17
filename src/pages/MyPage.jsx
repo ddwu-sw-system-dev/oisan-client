@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ChatRoomList from "./ChatRoomList";
+import OiPayUsage from "./../components/OiPayUsage";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -132,6 +133,9 @@ function MyPage() {
           </TabPane>
           <TabPane tab="채팅방" key="3">
             <ChatRoomList />
+          </TabPane>
+          <TabPane tab="오이페이 사용내역" key="4">
+            <OiPayUsage/>
           </TabPane>
         </Tabs>
       </div>
