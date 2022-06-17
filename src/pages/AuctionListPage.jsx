@@ -12,8 +12,8 @@ const AuctionListPage = () => {
 	const [auctions, setAuctions] = useState([]);
 
 	const getAuctionsData = async() => {
-		const response = await axios.get(`http://localhost:8080/auction/list`);
-    setAuctions(response.data);	
+		const response = await axios.get(`'http://localhost:8080/auction/list?categoryId=0&minWidth=-1&maxWidth=-1&minDepth=-1&maxDepth=-1&minHeight=-1&maxHeight=-1'`);
+	setAuctions(response.data);	
 		setLoading(false);
 	};
 
@@ -21,7 +21,7 @@ const AuctionListPage = () => {
 		getAuctionsData();
 	}, []);
 
-  const antIcon = (
+	const antIcon = (
 		<LoadingOutlined
 			style={{
 				fontSize: 24,

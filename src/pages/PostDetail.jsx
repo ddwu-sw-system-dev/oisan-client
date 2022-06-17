@@ -1,55 +1,79 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Image, Tag, Divider } from 'antd';
-import { useParams, Link } from 'react-router-dom';
-import { Button, Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Image, Tag, Divider, message } from 'antd';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Button, Avatar, Spin } from 'antd';
+import { UserOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import './PostDetail.scss';
 
 const PostDetail = () => {
 	const { id } = useParams();
+	const navigate = useNavigate();
 
-  // const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState([]);
+  	const [loading, setLoading] = useState(true);
+	const [post, setPost] = useState([]);
 
-  const getPostData = async() => {
+	const getPostData = async() => {
 		const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
 		setPost(response.data);	
-		// setLoading(false);
+		setLoading(false);
 		//TODO: api에서 customer 정보가 추가되면 수정해야하는 부분 있음
-  };
+		console.log(response.data);
+	};
 
-  useEffect(() => {
+	useEffect(() => {
 		getPostData();
-  }, []);
+	}, []);
 
-  const changeDateFormat = (date) => {
-    if (date) {
-      const [createDay] = date.split("T");
+	const antIcon = (
+		<LoadingOutlined
+			style={{
+				fontSize: 24,
+			}}
+			spin
+		/>
+	);
+
+	const changeDateFormat = (date) => {
+		if (date) {
+			const [createDay] = date.split("T");
 			return createDay.replaceAll("-", "/");
-    }
-    return date;
-  }
+		}
+		return date;
+	}
 
-  const convertCategory = (categoryId) => {
-    const categList = ['모두', '책상', '의자', '침대', '서랍'];
-    return categList[categoryId];
-  };
+	const convertCategory = (categoryId) => {
+		const categList = ['모두', '책상', '의자', '침대', '서랍'];
+		return categList[categoryId];
+	};
 
-  return (
+	const onClickChatButton = () => {
+		if (sessionStorage.getItem("customer") !== null) {
+			navigate(`/chatroom/${post.customer.customerId}`);
+		}
+		else {
+			message.warning("채팅은 로그인 후에 이용할 수 있습니다.");
+			// navigate(-1);
+		}
+	};
+
+	return (
     <div className="post-detail">
-			<div className="content-wrapper">
+		{loading ? <Spin indicator={antIcon} /> :
+		<div className="content-wrapper">
 				<Image
 					src={post.imageUrl}
 				/>
 				<div className="post-user-info">
 					<div className="avatar">
 						<Avatar shape="square" icon={<UserOutlined />} />
-						{post.nickname}
+						{post.customer.nickname}
 					</div>
-					<Button>
-						<Link to={`/chatroom/${post.customerId}`}>{post.nickname} 님과 채팅하기</Link>
+					<Button
+						onClick={onClickChatButton}
+					>
+						{post.customer.nickname} 님과 채팅하기
 					</Button>
 				</div>
 
@@ -71,9 +95,10 @@ const PostDetail = () => {
 				<p className="post-desc">{post.desc}</p>
 				<p className="post-create_at">{changeDateFormat(post.createAt)}</p>
 				<Divider />
-      </div>
+		</div>
+		}
     </div>
-  );
+	);
 };
 
 export default PostDetail;

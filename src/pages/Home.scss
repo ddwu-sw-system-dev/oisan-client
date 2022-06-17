@@ -1,4 +1,6 @@
 .Home {
+    padding-bottom: 50px;
+
     .ant-divider {
         .ant-divider-inner-text {
             font-family: 'LeeSeoyun';
@@ -12,6 +14,22 @@
             width: unset;
             justify-content: space-around;
             margin: 50px;
+        }
+    }
+    
+    .post-of-today-section {
+        .post-list-wrapper {
+            .post-list-section {
+                justify-content: center;
+            }
+        }
+    }
+
+    .auction-close-soon-section {
+        .auction-list-wrapper {
+            .auction-list-section {
+                justify-content: center;
+            }
         }
     }
 }
