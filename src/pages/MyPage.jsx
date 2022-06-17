@@ -4,6 +4,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ChatRoomList from "./ChatRoomList";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -128,6 +129,9 @@ function MyPage() {
             <Card.Grid style={gridStyle}>Content</Card.Grid>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
+          </TabPane>
+          <TabPane tab="채팅방" key="3">
+            <ChatRoomList />
           </TabPane>
         </Tabs>
       </div>
