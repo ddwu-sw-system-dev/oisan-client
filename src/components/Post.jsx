@@ -17,7 +17,7 @@ const Post = (props) => {
 				style={{ width: 240 }}
 				cover={<img alt="가구 사진" src={imgSrc} />}
 			>
-				<Card.Meta title={title} description={description} />
+				<Card.Meta title={title} description={description.length > 12 ? description.slice(0, 12) + "..." : description} />
 			</Card>
 		</Link>
 	);

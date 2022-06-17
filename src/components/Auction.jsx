@@ -12,7 +12,7 @@ const Auction = (props) => {
         style={{ width: 240 }}
         cover={<img alt="example" src={imgSrc} />}
       >
-        <Card.Meta title={title} description={description} />
+        <Card.Meta title={title} description={description.length > 12 ? description.slice(0, 12) + "..." : description} />
       </Card>
     </Link>
   );
