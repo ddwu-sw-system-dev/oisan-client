@@ -108,6 +108,7 @@ const PostWrite = () => {
       form.setFieldsValue({
         title: postContent.title,
         desc: postContent.desc,
+        price: postContent.price,
         width: postContent.width,
         height: postContent.height,
         depth: postContent.depth,
@@ -115,20 +116,19 @@ const PostWrite = () => {
     }
   }, [postContent]);
 
-  const updatePost = async (title, desc, width, height, depth) => {
+  const updatePost = async (title, desc, price, width, height, depth) => {
     await axios
       .put("http://localhost:8080/post/edit", {
         postId: id,
         customerId: customer.customerId,
         title: title,
         desc: desc,
+        price: price,
         imageUrl: null,
         width: width,
         height: height,
         depth: depth,
         categId: postContent.categId,
-        tagList: null,
-        price: 1050,
       })
       .then((response) => {
         console.log(response.data);
@@ -142,11 +142,19 @@ const PostWrite = () => {
 
       const title = getFieldValue(["title"]);
       const desc = getFieldValue(["desc"]);
+      const price = getFieldValue(["price"]);
       const width = getFieldValue(["width"]);
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
 
-      const response = await updatePost(title, desc, width, height, depth);
+      const response = await updatePost(
+        title,
+        desc,
+        price,
+        width,
+        height,
+        depth
+      );
 
       console.log("Success:", values, response);
     } catch (errorInfo) {
@@ -193,8 +201,20 @@ const PostWrite = () => {
           <TextArea rows={4} />
         </Form.Item>
         <Form.Item
-          name="사진"
-          label="picture"
+          label="가격"
+          name="price"
+          rules={[
+            {
+              required: true,
+              message: "가격을 입력해주세요!",
+            },
+          ]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
+          name="picture"
+          label="사진"
           valuePropName="fileList"
           getValueFromEvent={normFile}
           // rules={[
@@ -208,16 +228,43 @@ const PostWrite = () => {
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
-        <Form.Item label="너비" name="width">
+        <Form.Item
+          label="너비"
+          name="width"
+          rules={[
+            {
+              required: true,
+              message: "너비를 입력해주세요!",
+            },
+          ]}
+        >
           <InputNumber />
         </Form.Item>
-        <Form.Item label="깊이" name="height">
+        <Form.Item
+          label="높이"
+          name="height"
+          rules={[
+            {
+              required: true,
+              message: "높이를 입력해주세요!",
+            },
+          ]}
+        >
           <InputNumber />
         </Form.Item>
-        <Form.Item label="높이" name="depth">
+        <Form.Item
+          label="깊이"
+          name="depth"
+          rules={[
+            {
+              required: true,
+              message: "깊이를 입력해주세요!",
+            },
+          ]}
+        >
           <InputNumber />
         </Form.Item>
-        <Form.Item label="태그" name="tagList">
+        {/* <Form.Item label="태그" name="tagList">
           {tags.map((tag, index) => {
             if (editInputIndex === index) {
               return (
@@ -279,7 +326,7 @@ const PostWrite = () => {
               <PlusOutlined /> New Tag
             </Tag>
           )}
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           wrapperCol={{
             offset: 4,
