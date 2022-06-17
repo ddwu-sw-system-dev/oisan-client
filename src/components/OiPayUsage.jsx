@@ -2,7 +2,7 @@ import axios from "axios";
 import "./OiPayUsage.scss";
 import { useState, useEffect } from "react";
 import { List, Typography, Divider, Pagination } from "antd";
-import useAuth from "../hooks/useExist";
+import useExist from "../hooks/useExist";
 const { Text } = Typography;
 
 const OiPayUsage = () => {
