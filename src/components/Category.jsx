@@ -1,39 +1,50 @@
-import './Category.scss';
+import "./Category.scss";
 
-const Category = () => {
-  	const CATEGORY_OPTIONS = [
-		{ 
-			key: 'table',
-			title: '책상',
-			image: '',
-		},
-		{
-			key: 'chair',
-			title: '의자',
-			image: '',
-		},
-		{
-			key: 'bed',
-			title: '침대',
-			image: '',
-		}, 
-		{
-			key: 'drawer',
-			title: '서랍',
-			image: '',
-		}
-	];
+const Category = ({ getCategId }) => {
+  const CATEGORY_OPTIONS = [
+    {
+      id: 1,
+      key: "table",
+      title: "책상",
+      image: "",
+    },
+    {
+      id: 2,
+      key: "chair",
+      title: "의자",
+      image: "",
+    },
+    {
+      id: 3,
+      key: "bed",
+      title: "침대",
+      image: "",
+    },
+    {
+      id: 4,
+      key: "drawer",
+      title: "서랍",
+      image: "",
+    },
+  ];
 
-	return (
-    	<div className="category-section">
-			{CATEGORY_OPTIONS.map(({key, title}) => (
-				<div key={key} className="category-button">
-					{title}
-				</div>
-			))}
-		</div>
-	);
+  const handleClick = (id) => {
+    getCategId(id);
+  };
 
+  return (
+    <div className="category-section">
+      {CATEGORY_OPTIONS.map(({ id, key, title }) => (
+        <div
+          key={key}
+          className="category-button"
+          onClick={() => handleClick(id)}
+        >
+          {title}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Category;

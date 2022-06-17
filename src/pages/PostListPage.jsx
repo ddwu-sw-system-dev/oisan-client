@@ -30,18 +30,25 @@ const PostListPage = () => {
     />
   );
 
+  const [categId, setCategId] = useState(0);
+
+  const getCategId = (id) => {
+    console.log("id", id);
+    setCategId(id);
+  };
+
   return (
     <div className="post-list-page">
       {loading ? (
         <Spin indicator={antIcon} />
       ) : (
         <>
-          <Category />
+          <Category getCategId={getCategId} />
           <div className="post-list-wrapper">
             <Link to="/post/write">
               <Button>글 작성</Button>
             </Link>
-            <PostList data={posts} />
+            <PostList data={posts} id={categId} />
           </div>
         </>
       )}
