@@ -22,7 +22,7 @@ const ChatRoomList = () => {
 	const getChatRoomListData = async() => {
 		if(loginUser && loginUser.customerId) {
 			const response = await axios.get(`http://localhost:8080/chatRooms/list/${loginUser.customerId}`);
-			// setChatRoomList(response.data);	
+			setChatRoomList(response.data);
 			setLoading(false);
 			// console.log(response.data);
 		}
@@ -41,12 +41,23 @@ const ChatRoomList = () => {
 		/>
 	);
 
+	const getChatReceiverName = async (customerId) => {
+		const response = await axios.get(`http://localhost:8080/customers/${customerId}`);
+		console.log(response.data);
+		const { nickname } = response.data;
+		console.log(nickname);
+		return nickname;
+	};
+
 	const whoIsChatReceiver = useCallback((item) => {
-		if(loginUser && loginUser.customerId) {
-			if (loginUser.customerId === item.customer1Id) return item.customer2Id;
-			if (loginUser.customerId === item.customer2Id) return item.customer1Id;
+		let receiverId;
+		if(loginUser && loginUser.customerId) { 
+			if (loginUser.customerId === item.customer1Id) receiverId = item.customer2Id;
+			if (loginUser.customerId === item.customer2Id) receiverId = item.customer1Id;
 		}
+		return receiverId;
 	}, [loginUser]);
+
 
 	return (
 		<div>
@@ -60,7 +71,7 @@ const ChatRoomList = () => {
 							<List.Item.Meta
 								key={item.chatRoomId}
 								avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-								title={<Link to={`/chatroom/${item.chatRoomId}`}>{`${whoIsChatReceiver(item)}과의 채팅방`}</Link>}
+								title={<Link to={`/chatroom/${item.chatRoomId}`}>{whoIsChatReceiver(item)} 과의 채팅방</Link>}
 								// description="Ant Design, a design language for background applications, is refined by Ant UED Team"
 							/>
 						</List.Item>

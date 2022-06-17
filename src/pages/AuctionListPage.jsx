@@ -12,7 +12,7 @@ const AuctionListPage = () => {
 	const [auctions, setAuctions] = useState([]);
 
 	const getAuctionsData = async() => {
-		const response = await axios.get(`'http://localhost:8080/auction/list?categoryId=0&minWidth=-1&maxWidth=-1&minDepth=-1&maxDepth=-1&minHeight=-1&maxHeight=-1'`);
+		const response = await axios.get(`http://localhost:8080/auction/list?categoryId=0&minWidth=-1&maxWidth=-1&minDepth=-1&maxDepth=-1&minHeight=-1&maxHeight=-1`);
 	setAuctions(response.data);	
 		setLoading(false);
 	};
