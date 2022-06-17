@@ -39,7 +39,7 @@ const Header = () => {
         {isLogin ? (
           <>
             <Link to={"/mypage"}>
-              <li>{customer.customerName}님 반갑습니다!</li>
+              <li>{customer.nickname}님 반갑습니다!</li>
             </Link>
             <li onClick={onLogout}>로그아웃</li>
           </>
