@@ -1,10 +1,11 @@
 .post-list-section {
   display: flex;
   flex-wrap: wrap;
-	
-	a {
-		height: fit-content;
-	}
+  justify-content: center;
+
+  a {
+    height: fit-content;
+  }
 
   .post-item {
     margin: 5px;
