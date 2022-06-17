@@ -8,11 +8,12 @@ import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import "./PostDetail.scss";
 
 const PostDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); //postId
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState([]);
+	const [chatRoom, setChatRoom] = useState();
 
   const [loginCustomer, setloginCustomer] = useState();
   const [myPost, setMyPost] = useState(false);
@@ -22,8 +23,14 @@ const PostDetail = () => {
     setPost(response.data);
     setLoading(false);
     //TODO: api에서 customer 정보가 추가되면 수정해야하는 부분 있음
-    console.log(response.data);
+    // console.log(response.data);
   };
+
+	const getChatRoomData = async () => {
+		const response = await axios.get(`http://localhost:8080/chatRooms/find/${post.customer.customerId}/${loginCustomer.customerId}`);
+		setChatRoom(response.data);
+		// console.log("chatRoom:", response.data);
+	}
 
   useEffect(() => {
     setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
@@ -40,6 +47,15 @@ const PostDetail = () => {
       setMyPost(true);
     }
   }, [post, loginCustomer]);
+
+	useEffect(() => {
+		if (
+			post.customer &&
+      loginCustomer
+    ) {
+			getChatRoomData();
+		}
+	}, [post, loginCustomer]);
 
   const antIcon = (
     <LoadingOutlined
@@ -65,7 +81,7 @@ const PostDetail = () => {
 
   const onClickChatButton = () => {
     if (sessionStorage.getItem("customer") !== null) {
-      navigate(`/chatroom/${post.customer.customerId}`);
+      navigate(`/chatroom/${chatRoom.chatRoomId}`);
     } else {
       message.warning("채팅은 로그인 후에 이용할 수 있습니다.");
       // navigate(-1);
@@ -97,7 +113,7 @@ const PostDetail = () => {
               {post.customer.nickname}
             </div>
             <Button onClick={onClickChatButton}>
-              {post.customer.nickname} 님과 채팅하기
+              {loginCustomer && post.customer.customerId == loginCustomer.customerId ? null : <span>{post.customer.nickname} 님과 채팅하기</span>}
             </Button>
           </div>
 
