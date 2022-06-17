@@ -12,12 +12,35 @@ const ChatRoomDetail = () => {
 	const navigate = useNavigate();
 	const { id } = useParams(); // chatRoomId
 	const [loginUser, setLoginUser] = useState();
+	const [receiverId, setReceiverId] = useState();
+	const [loading, setLoading] = useState(true);
+	const [chats, setChats] = useState([]);	
+
+	const getChatsData = async() => {
+		const response = await axios.get(`http://localhost:8080/chatRooms/getChatList/${id}`);
+		setChats(response.data);	
+		// console.log(response.data);
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		getChatsData();
+	}, []);
+
+	const isMyMessage = (senderId) => {
+		if (loginUser.customerId === senderId) {
+			return true;
+		}
+		return false;
+	};
 
 	useEffect(() => {
 		if (sessionStorage.getItem("customer") !== null) {
 			setLoginUser(JSON.parse(sessionStorage.getItem("customer")));
 		}
-		
+		else {
+			navigate(-1);
+		}
 	}, []);
 
 	const sendChat = async(content) => {
@@ -26,8 +49,8 @@ const ChatRoomDetail = () => {
 			content: content,
 			senderId: loginUser.customerId,
 		}
-		console.log("newchat=", newChat);
-		const response = await axios.post(`http://localhost:8080/chatRooms/sendChat/${id}?content=${content}&senderId=${loginUser.customerId}`, newChat);
+		// console.log("newchat=", newChat);
+		const response = await axios.post(`http://localhost:8080/chatRooms/sendChat/${id}?content=${content}&senderId=${loginUser.customerId}&chatRoomId=${id}`, newChat);
 		
 		// response 응답코드보고 성공하면
 		if(response.data) {
@@ -49,26 +72,6 @@ const ChatRoomDetail = () => {
 		/>
 	);
 
-	const [loading, setLoading] = useState(true);
-	const [chats, setChats] = useState([]);	
-
-	const getChatsData = async() => {
-		const response = await axios.get(`http://localhost:8080/chatRooms/getChatList/${id}`);
-		setChats(response.data);	
-		console.log(response.data);
-		setLoading(false);
-	};
-
-	useEffect(() => {
-		getChatsData();
-	}, []);
-
-	const isMyMessage = (senderId) => {
-		if (loginUser.customerId === senderId) {
-			return true;
-		}
-		return false;
-	}
 
 	const message_section = (
 		<div className="message-section">
@@ -90,7 +93,7 @@ const ChatRoomDetail = () => {
     <div className="chat-detail-section">
 			{loading ? <Spin indicator={antIcon} /> :
 				<div className="chat-content-section">
-					<h2>누구누구와의 채팅방</h2>
+					{/* <h2>누구누구와의 채팅방</h2> */}
 					{message_section}
 					<Search
 						placeholder="채팅을 입력하세요"
