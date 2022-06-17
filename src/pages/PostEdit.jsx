@@ -85,15 +85,42 @@ const PostWrite = () => {
 
   const { id } = useParams();
 
+  const [postContent, setPostContent] = useState([]);
   const [form] = Form.useForm();
   const { getFieldValue, validateFields } = form;
   const [customer, setCustomer] = useState();
+  const categList = ["모두", "책상", "의자", "침대", "서랍"];
+
+  const editPost = async () => {
+    const response = await axios.get(
+      `http://localhost:8080/post/edit?postId=${id}`
+    );
+    setPostContent(response.data);
+    console.log(response.data);
+  };
 
   useEffect(() => {
     setCustomer(JSON.parse(sessionStorage.getItem("customer")));
+    editPost();
   }, []);
 
-  const writePost = async (
+  useEffect(() => {
+    if (postContent) {
+      console.log("postContent", postContent);
+
+      form.setFieldsValue({
+        categId: categList[postContent.categId],
+        title: postContent.title,
+        desc: postContent.desc,
+        price: postContent.price,
+        width: postContent.width,
+        height: postContent.height,
+        depth: postContent.depth,
+      });
+    }
+  }, [postContent]);
+
+  const updatePost = async (
     categId,
     title,
     desc,
@@ -103,7 +130,8 @@ const PostWrite = () => {
     depth
   ) => {
     await axios
-      .post("http://localhost:8080/post/new", {
+      .put("http://localhost:8080/post/edit", {
+        postId: id,
         customerId: customer.customerId,
         categId: categId,
         title: title,
@@ -116,7 +144,7 @@ const PostWrite = () => {
       })
       .then((response) => {
         console.log(response.data);
-        document.location.href = `/post`;
+        document.location.href = `/post/${id}`;
       });
   };
 
@@ -124,7 +152,7 @@ const PostWrite = () => {
     try {
       const values = await validateFields();
 
-      const categId = parseInt(getFieldValue(["categId"]));
+      const categId = getFieldValue(["categId"]);
       const title = getFieldValue(["title"]);
       const desc = getFieldValue(["desc"]);
       const price = getFieldValue(["price"]);
@@ -132,7 +160,7 @@ const PostWrite = () => {
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
 
-      const response = await writePost(
+      const response = await updatePost(
         categId,
         title,
         desc,
@@ -151,7 +179,7 @@ const PostWrite = () => {
 
   return (
     <div className="post-write-section">
-      <Divider>글 작성</Divider>
+      <Divider>글 수정</Divider>
       <Form
         form={form}
         labelCol={{
@@ -337,7 +365,7 @@ const PostWrite = () => {
           }}
         >
           <Button type="primary" onClick={onCheck}>
-            작성
+            수정
           </Button>
         </Form.Item>
       </Form>
