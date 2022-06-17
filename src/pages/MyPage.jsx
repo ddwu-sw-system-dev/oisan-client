@@ -1,6 +1,15 @@
 import "./MyPage.scss";
-import { Card, List, Typography, Divider, Tabs, Pagination } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import {
+  Card,
+  List,
+  Typography,
+  Divider,
+  Tabs,
+  Pagination,
+  Avatar,
+  Tooltip,
+} from "antd";
+import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -65,18 +74,25 @@ function MyPage() {
           cover={
             <img
               alt="example"
-              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              src="https://m.skychang.kr/web/product/big/202009/ee2432a9c10da5a2167f89fa705d40ef.jpg"
             />
           }
           actions={[
             <Link to={`/myInfo/edit`}>
-              <EditOutlined key="edit" />
+              <Tooltip title="내 정보 수정">
+                <EditOutlined key="edit" tooltip="click to edit text" />
+              </Tooltip>
+            </Link>,
+            <Link to={`/oipay/charge`}>
+              <Tooltip title="오이페이 충전/사용">
+                <PlusCircleOutlined />
+              </Tooltip>
             </Link>,
           ]}
         >
           <Meta
-            title={!customer ? "default" : customer.customerName}
-            description={!customer ? "default" : customer.nickname}
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title={!customer ? "default" : customer.nickname}
           />
         </Card>
       </div>
@@ -135,7 +151,7 @@ function MyPage() {
             <ChatRoomList />
           </TabPane>
           <TabPane tab="오이페이 사용내역" key="4">
-            <OiPayUsage/>
+            <OiPayUsage />
           </TabPane>
         </Tabs>
       </div>
