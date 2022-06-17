@@ -1,8 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, Input, Button, InputNumber, Upload, Tag, Tooltip } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  InputNumber,
+  Upload,
+  Tag,
+  Tooltip,
+  Divider,
+  message,
+} from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import "./PostWrite.scss";
 import axios from "axios";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -70,25 +81,85 @@ const PostWrite = () => {
     setInputValue("");
   };
 
-  const postId = 1; // api로 수정
+  const { id } = useParams();
 
-  const [contents, setContents] = useState([]);
+  const [postContent, setPostContent] = useState([]);
+  const [form] = Form.useForm();
+  const { getFieldValue, validateFields } = form;
+  const [customer, setCustomer] = useState();
 
   const editPost = async () => {
     const response = await axios.get(
-      `http://localhost:8080/post/edit?postId=${postId}`
+      `http://localhost:8080/post/edit?postId=${id}`
     );
-    setContents(response.data);
+    setPostContent(response.data);
     console.log(response.data);
   };
 
   useEffect(() => {
+    setCustomer(JSON.parse(sessionStorage.getItem("customer")));
     editPost();
   }, []);
 
+  useEffect(() => {
+    if (postContent) {
+      console.log("postContent", postContent);
+
+      form.setFieldsValue({
+        title: postContent.title,
+        desc: postContent.desc,
+        width: postContent.width,
+        height: postContent.height,
+        depth: postContent.depth,
+      });
+    }
+  }, [postContent]);
+
+  const updatePost = async (title, desc, width, height, depth) => {
+    await axios
+      .put("http://localhost:8080/post/edit", {
+        postId: id,
+        customerId: customer.customerId,
+        title: title,
+        desc: desc,
+        imageUrl: null,
+        width: width,
+        height: height,
+        depth: depth,
+        categId: postContent.categId,
+        tagList: null,
+        price: 1050,
+      })
+      .then((response) => {
+        console.log(response.data);
+        document.location.href = `/post/${id}`;
+      });
+  };
+
+  const onCheck = async () => {
+    try {
+      const values = await validateFields();
+
+      const title = getFieldValue(["title"]);
+      const desc = getFieldValue(["desc"]);
+      const width = getFieldValue(["width"]);
+      const height = getFieldValue(["height"]);
+      const depth = getFieldValue(["depth"]);
+
+      const response = await updatePost(title, desc, width, height, depth);
+
+      console.log("Success:", values, response);
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
+      message.error("글 수정에 실패하였습니다");
+    }
+  };
+
   return (
     <div className="post-write-section">
+      <Divider>글 작성</Divider>
       <Form
+        form={form}
         labelCol={{
           span: 4,
         }}
@@ -99,7 +170,7 @@ const PostWrite = () => {
       >
         <Form.Item
           label="제목"
-          name="제목"
+          name="title"
           rules={[
             {
               required: true,
@@ -111,7 +182,7 @@ const PostWrite = () => {
         </Form.Item>
         <Form.Item
           label="내용"
-          name="내용"
+          name="desc"
           rules={[
             {
               required: true,
@@ -123,30 +194,30 @@ const PostWrite = () => {
         </Form.Item>
         <Form.Item
           name="사진"
-          label="사진"
+          label="picture"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[
-            {
-              required: true,
-              message: "이미지를 업로드하세요!",
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "이미지를 업로드하세요!",
+          //   },
+          // ]}
         >
           <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
-        <Form.Item label="너비">
+        <Form.Item label="너비" name="width">
           <InputNumber />
         </Form.Item>
-        <Form.Item label="깊이">
+        <Form.Item label="깊이" name="height">
           <InputNumber />
         </Form.Item>
-        <Form.Item label="높이">
+        <Form.Item label="높이" name="depth">
           <InputNumber />
         </Form.Item>
-        <Form.Item label="태그">
+        <Form.Item label="태그" name="tagList">
           {tags.map((tag, index) => {
             if (editInputIndex === index) {
               return (
@@ -215,7 +286,7 @@ const PostWrite = () => {
             span: 14,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" onClick={onCheck}>
             작성
           </Button>
         </Form.Item>
