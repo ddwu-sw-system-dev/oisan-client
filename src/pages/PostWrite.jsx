@@ -9,12 +9,14 @@ import {
   Tooltip,
   Divider,
   message,
+  Cascader,
+  Select,
 } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import "./PostWrite.scss";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
-
+const { Option } = Select;
 const { TextArea } = Input;
 
 const normFile = (e) => {
@@ -83,44 +85,27 @@ const PostWrite = () => {
 
   const { id } = useParams();
 
-  const [postContent, setPostContent] = useState([]);
   const [form] = Form.useForm();
   const { getFieldValue, validateFields } = form;
   const [customer, setCustomer] = useState();
 
-  const editPost = async () => {
-    const response = await axios.get(
-      `http://localhost:8080/post/edit?postId=${id}`
-    );
-    setPostContent(response.data);
-    console.log(response.data);
-  };
-
   useEffect(() => {
     setCustomer(JSON.parse(sessionStorage.getItem("customer")));
-    editPost();
   }, []);
 
-  useEffect(() => {
-    if (postContent) {
-      console.log("postContent", postContent);
-
-      form.setFieldsValue({
-        title: postContent.title,
-        desc: postContent.desc,
-        price: postContent.price,
-        width: postContent.width,
-        height: postContent.height,
-        depth: postContent.depth,
-      });
-    }
-  }, [postContent]);
-
-  const updatePost = async (title, desc, price, width, height, depth) => {
+  const writePost = async (
+    categId,
+    title,
+    desc,
+    price,
+    width,
+    height,
+    depth
+  ) => {
     await axios
-      .put("http://localhost:8080/post/edit", {
-        postId: id,
+      .post("http://localhost:8080/post/new", {
         customerId: customer.customerId,
+        categId: categId,
         title: title,
         desc: desc,
         price: price,
@@ -128,11 +113,10 @@ const PostWrite = () => {
         width: width,
         height: height,
         depth: depth,
-        categId: postContent.categId,
       })
       .then((response) => {
         console.log(response.data);
-        document.location.href = `/post/${id}`;
+        document.location.href = `/post`;
       });
   };
 
@@ -140,6 +124,7 @@ const PostWrite = () => {
     try {
       const values = await validateFields();
 
+      const categId = parseInt(getFieldValue(["categId"]));
       const title = getFieldValue(["title"]);
       const desc = getFieldValue(["desc"]);
       const price = getFieldValue(["price"]);
@@ -147,7 +132,8 @@ const PostWrite = () => {
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
 
-      const response = await updatePost(
+      const response = await writePost(
+        categId,
         title,
         desc,
         price,
@@ -159,7 +145,7 @@ const PostWrite = () => {
       console.log("Success:", values, response);
     } catch (errorInfo) {
       console.log("Failed:", errorInfo);
-      message.error("글 수정에 실패하였습니다");
+      message.error("글 작성에 실패하였습니다");
     }
   };
 
@@ -176,6 +162,23 @@ const PostWrite = () => {
         }}
         layout="horizontal"
       >
+        <Form.Item
+          name="categId"
+          label="카테고리"
+          rules={[
+            {
+              required: true,
+              message: "카테고리를 선택하세요!",
+            },
+          ]}
+        >
+          <Select style={{ width: 80 }}>
+            <Option value="1">책상</Option>
+            <Option value="2">의자</Option>
+            <Option value="3">침대</Option>
+            <Option value="4">서랍</Option>
+          </Select>
+        </Form.Item>
         <Form.Item
           label="제목"
           name="title"
