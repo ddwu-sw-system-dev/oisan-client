@@ -3,11 +3,7 @@ import axios from "axios";
 import { Image, Tag, Divider, message, Tooltip } from "antd";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button, Avatar, Spin } from "antd";
-import {
-  UserOutlined,
-  LoadingOutlined,
-  HeartTwoTone,
-} from "@ant-design/icons";
+import { UserOutlined, LoadingOutlined, HeartTwoTone } from "@ant-design/icons";
 
 import "./PostDetail.scss";
 
@@ -158,7 +154,7 @@ const PostDetail = () => {
           />
           <div className="post-user-info">
             <div className="avatar">
-              <Avatar shape="square" icon={<UserOutlined />} />
+              <Avatar src="https://joeschmoe.io/api/v1/random" />
               {post.customer.nickname}
             </div>
             {console.log("complete", complete)}
