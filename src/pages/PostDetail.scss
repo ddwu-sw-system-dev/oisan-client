@@ -1,47 +1,52 @@
 .post-detail {
-    padding: 15px 0px 100px 0px;
-    display: flex;
-    justify-content: center;
-    font-family: 'Noto Sans KR', sans-serif;
+  padding: 15px 0px 100px 0px;
+  display: flex;
+  justify-content: center;
+  font-family: "Noto Sans KR", sans-serif;
 
-    .content-wrapper {
-        width: 500px;
+  .content-wrapper {
+    width: 500px;
 
-        .ant-divider {
-            margin: 15px 0px;
-        }
-
-        .ant-image {
-            width: 500px;
-        }
-
-        .post-user-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 15px;
-
-            .avatar {
-                display: flex;
-                align-items: center;
-                .ant-avatar {
-                    margin-right: 8px;
-                }
-            }
-        }
-
-        .post-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .post-desc {
-            margin: 15px 5px 30px;
-        }
-
-        .post-create_at {
-            font-size: 12px;
-            color: rgb(186, 183, 183);
-        }
+    .ant-divider {
+      margin: 15px 0px;
     }
+
+    .ant-image {
+      width: 500px;
+    }
+
+    .post-user-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 15px;
+
+      .avatar {
+        display: flex;
+        align-items: center;
+        .ant-avatar {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .post-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .post-desc {
+      margin: 15px 5px 30px;
+    }
+
+    .post-create_at {
+      font-size: 12px;
+      color: rgb(186, 183, 183);
+    }
+  }
+
+  .post-detail-btns {
+    display: flex;
+    justify-content: right;
+  }
 }
