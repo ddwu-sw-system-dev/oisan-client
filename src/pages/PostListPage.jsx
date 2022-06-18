@@ -38,7 +38,6 @@ const PostListPage = () => {
   const [categId, setCategId] = useState(0);
 
   const getCategId = (id) => {
-    console.log("id", id);
     setCategId(id);
   };
 

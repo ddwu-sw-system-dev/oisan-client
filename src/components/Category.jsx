@@ -3,6 +3,12 @@ import "./Category.scss";
 const Category = ({ getCategId }) => {
   const CATEGORY_OPTIONS = [
     {
+      id: 0,
+      key: "all",
+      title: "모두",
+      image: "",
+    },
+    {
       id: 1,
       key: "table",
       title: "책상",
