@@ -31,7 +31,11 @@ function Home() {
     const response = await axios.get(
       `http://localhost:8080/auction/list?categoryId=0&minWidth=-1&maxWidth=-1&minDepth=-1&maxDepth=-1&minHeight=-1&maxHeight=-1`
     );
-    setAuctions(response.data.slice(0, 4));
+    setAuctions(response.data.sort((a, b) => {
+      if(a.status > b.status) return -1;
+      if(a.status === b.status) return 0;
+      if(a.status < b.status) return 1;
+    }).slice(0, 4));
   };
 
   useEffect(() => {
