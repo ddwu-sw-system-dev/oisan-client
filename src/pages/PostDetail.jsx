@@ -20,18 +20,21 @@ const PostDetail = () => {
   const [myPost, setMyPost] = useState(false);
 
   const [complete, setComplete] = useState(1);
+  const [like, setLike] = useState();
 
   const getPostData = async () => {
     const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
+
     setPost(response.data);
     setComplete(response.data.status);
+    setLike(Boolean(response.data.likePost.length));
 
     //TODO: tags
     const tagResponse = await axios.get(
       `http://localhost:8080/post/tag/list?postId=${id}`
     );
     setMoodTags(tagResponse.data);
-    console.log(tagResponse.data);
+    // console.log(tagResponse.data);
     setLoading(false);
   };
 
@@ -60,8 +63,11 @@ const PostDetail = () => {
 
   useEffect(() => {
     setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
-    getPostData();
   }, []);
+
+  useEffect(() => {
+    getPostData();
+  }, [loginCustomer]);
 
   useEffect(() => {
     if (
@@ -141,6 +147,15 @@ const PostDetail = () => {
       });
   };
 
+  const clickLikeButton = async () => {
+    await axios
+      .get(`http://localhost:8080/post/like/${id}/${loginCustomer.customerId}`)
+      .then((response) => {
+        console.log("라이크", response.data);
+        setLike((prev) => !prev);
+      });
+  };
+
   return (
     <div className="post-detail">
       {loading ? (
@@ -157,7 +172,6 @@ const PostDetail = () => {
               <Avatar src="https://joeschmoe.io/api/v1/random" />
               {post.customer.nickname}
             </div>
-            {console.log("complete", complete)}
             {loginCustomer &&
             post.customer.customerId === loginCustomer.customerId ? (
               complete ? (
@@ -203,6 +217,7 @@ const PostDetail = () => {
           </p>
           <p className="post-create_at">{changeDateFormat(post.createAt)}</p>
           <Divider />
+          {console.log("좋아요 여부", like)}
           <div className="post-detail-btns">
             {myPost ? (
               <>
@@ -217,12 +232,22 @@ const PostDetail = () => {
                   삭제
                 </Button>
               </>
-            ) : (
-              <Tooltip title="좋아요">
+            ) : like ? (
+              <Tooltip title="좋아요 취소">
                 <Button
                   type="primary"
                   danger
                   shape="circle"
+                  onClick={clickLikeButton}
+                  icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                />
+              </Tooltip>
+            ) : (
+              <Tooltip title="좋아요">
+                <Button
+                  danger
+                  shape="circle"
+                  onClick={clickLikeButton}
                   icon={<HeartTwoTone twoToneColor="#eb2f96" />}
                 />
               </Tooltip>
