@@ -13,7 +13,6 @@ import {
 } from "antd";
 import { DollarOutlined } from "@ant-design/icons";
 import axios from "axios";
-import OiPayUse from "../components/OiPayUse";
 import "./OiPayCharge.scss";
 
 const OipayCharge = () => {
@@ -90,9 +89,6 @@ const OipayCharge = () => {
           </Button>
         </Form.Item>
       </Form>
-
-      {/* 오이페이 사용하기 */}
-      <OiPayUse />
     </div>
   );
 };

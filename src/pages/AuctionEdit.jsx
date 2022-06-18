@@ -248,7 +248,7 @@ const AuctionWrite = () => {
         >
           <InputNumber disabled={true} />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="picture"
           label="사진"
           valuePropName="fileList"
@@ -263,7 +263,7 @@ const AuctionWrite = () => {
           <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="너비"
           name="width"

@@ -107,12 +107,16 @@ const AuctionDetail = () => {
   };
 
   const deletePost = async () => {
-    await axios
+    if(!biddingList.length) {
+      await axios
       .delete(`http://localhost:8080/auction/${id}`)
       .then(() => {
         document.location.href = "/auction";
         message.success("글을 삭제했습니다");
       });
+      return;
+    }
+    message.warning("입찰이 존재하는 경매는 삭제할 수 없습니다.");
   };
 
   const showModal = () => {
@@ -212,7 +216,7 @@ const AuctionDetail = () => {
             </div>
           }
           header={
-            <p>입찰 내역</p>
+            <span>입찰 내역</span>
           }
           bordered
           dataSource={biddingList.sort((a, b) => {
