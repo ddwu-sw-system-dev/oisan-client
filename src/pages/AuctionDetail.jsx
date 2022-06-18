@@ -241,7 +241,7 @@ const AuctionDetail = () => {
       <>
         <StyledRoot>
           <StyledImage>
-            <Image className="auction-detail-image" src={auction.imageUrl} />
+            <Image className="auction-detail-image" src={"https://oisan.s3.ap-northeast-2.amazonaws.com/" + auction.imageUrl} />
           </StyledImage>
           <div className="auction-info-section">
             <Tag color="geekblue">{convertCategory(auction.categoryId)}</Tag>
