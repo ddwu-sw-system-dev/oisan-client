@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Input, Space } from 'antd';
+const { Search } = Input;
 
 const Header = () => {
   const [customer, setCustomer] = useState();
   const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionStorage.getItem("customer") !== null) {
@@ -34,7 +37,13 @@ const Header = () => {
           <li>경매</li>
         </Link>
         <li>
-          <input type="text" placeholder="검색어를 입력하세요" />
+          <Search
+            placeholder="검색어를 입력하세요"
+            onSearch={(value) => navigate(`/post/search?type=default&keyword=${value}`)}
+            style={{
+              width: 200,
+            }}
+          />
         </li>
         {isLogin ? (
           <>

@@ -13,6 +13,7 @@ const PostDetail = () => {
 
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState([]);
+  const [moodTags, setMoodTags] = useState([]);
   const [chatRoom, setChatRoom] = useState();
 
   const [loginCustomer, setloginCustomer] = useState();
@@ -24,9 +25,12 @@ const PostDetail = () => {
     const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
     setPost(response.data);
     setComplete(response.data.status);
+
+    //TODO: tags
+    const tagResponse = await axios.get(`http://localhost:8080/post/tag/list?postId=${id}`);
+    setMoodTags(tagResponse.data);
+    console.log(tagResponse.data);
     setLoading(false);
-    //TODO: api에서 customer 정보가 추가되면 수정해야하는 부분 있음
-    // console.log(response.data);
   };
 
   const getChatRoomData = async () => {
@@ -182,12 +186,18 @@ const PostDetail = () => {
           </span>
 
           <p className="post-desc">{post.desc}</p>
+          <p className="post-tags">
+            {moodTags.map(tag => 
+              <Link to={`/post/search?type=tag&tagname=${tag.name}&tagid=${tag.moodtagId}`}>
+                <Tag color="lime">#{tag.name}</Tag>
+              </Link>)}
+          </p>
           <p className="post-create_at">{changeDateFormat(post.createAt)}</p>
 
           {myPost ? (
             <>
-              <Button onClick={editPost}>수정</Button>
-              <Button onClick={deletePost}>삭제</Button>
+              <Button type="primary" onClick={editPost} style={{marginRight: '8px'}}>수정</Button>
+              <Button type="danger" onClick={deletePost}>삭제</Button>
             </>
           ) : null}
 

@@ -2,16 +2,15 @@ import { useState, useEffect } from "react";
 
 const useExist = () => {
     const [loginCustomer, setloginCustomer] = useState();
-    const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
-        setIsLogin(true);
+        if(sessionStorage.getItem("customer") !== null){
+            setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
+        }
     }, []);
 
     return {
         loginCustomer: loginCustomer,
-        isLogin: isLogin,
     };
 };
 
