@@ -156,6 +156,7 @@ const PostDetail = () => {
       .delete(`http://localhost:8080/post/delete?postId=${id}`)
       .then(() => {
         document.location.href = "/post";
+        message.success("글을 삭제했습니다.");
       });
   };
 

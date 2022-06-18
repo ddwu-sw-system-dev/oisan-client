@@ -240,12 +240,12 @@ const AuctionWrite = () => {
           <TextArea rows={4} />
         </Form.Item>
         <Form.Item
-          label="가격"
+          label="시작가"
           name="price"
           rules={[
             {
               required: true,
-              message: "가격을 입력해주세요!",
+              message: "시작가를 입력해주세요!",
             },
           ]}
         >

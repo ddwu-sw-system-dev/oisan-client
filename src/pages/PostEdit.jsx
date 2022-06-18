@@ -150,6 +150,7 @@ const PostWrite = () => {
       .then((response) => {
         console.log(response.data);
         document.location.href = `/post/${id}`;
+        message.success("글을 수정하였습니다.");
       });
   };
 
