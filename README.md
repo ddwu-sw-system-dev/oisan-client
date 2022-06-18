@@ -1,6 +1,4 @@
-프로젝트명 : 오늘은 이렇게 산다
-
-## Available Scripts
+## 프로젝트명 : 오늘은 이렇게 산다
 
 In the project directory, you can run:
 
