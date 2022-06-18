@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Image, Tag, Divider, message } from "antd";
+import { Image, Tag, Divider, message, Tooltip } from "antd";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button, Avatar, Spin } from "antd";
-import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
+import { UserOutlined, LoadingOutlined, HeartTwoTone } from "@ant-design/icons";
 
 import "./PostDetail.scss";
 
@@ -20,16 +20,21 @@ const PostDetail = () => {
   const [myPost, setMyPost] = useState(false);
 
   const [complete, setComplete] = useState(1);
+  const [like, setLike] = useState();
 
   const getPostData = async () => {
     const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
+
     setPost(response.data);
     setComplete(response.data.status);
+    setLike(Boolean(response.data.likePost.length));
 
     //TODO: tags
-    const tagResponse = await axios.get(`http://localhost:8080/post/tag/list?postId=${id}`);
+    const tagResponse = await axios.get(
+      `http://localhost:8080/post/tag/list?postId=${id}`
+    );
     setMoodTags(tagResponse.data);
-    console.log(tagResponse.data);
+    // console.log(tagResponse.data);
     setLoading(false);
   };
 
@@ -58,8 +63,11 @@ const PostDetail = () => {
 
   useEffect(() => {
     setloginCustomer(JSON.parse(sessionStorage.getItem("customer")));
-    getPostData();
   }, []);
+
+  useEffect(() => {
+    getPostData();
+  }, [loginCustomer]);
 
   useEffect(() => {
     if (
@@ -139,19 +147,31 @@ const PostDetail = () => {
       });
   };
 
+  const clickLikeButton = async () => {
+    await axios
+      .get(`http://localhost:8080/post/like/${id}/${loginCustomer.customerId}`)
+      .then((response) => {
+        console.log("라이크", response.data);
+        setLike((prev) => !prev);
+      });
+  };
+
   return (
     <div className="post-detail">
       {loading ? (
         <Spin indicator={antIcon} />
       ) : (
         <div className="content-wrapper">
-          <Image src={"https://oisan.s3.ap-northeast-2.amazonaws.com/" + post.imageUrl} />
+          <Image
+            src={
+              "https://oisan.s3.ap-northeast-2.amazonaws.com/" + post.imageUrl
+            }
+          />
           <div className="post-user-info">
             <div className="avatar">
-              <Avatar shape="square" icon={<UserOutlined />} />
+              <Avatar src="https://joeschmoe.io/api/v1/random" />
               {post.customer.nickname}
             </div>
-            {console.log("complete", complete)}
             {loginCustomer &&
             post.customer.customerId === loginCustomer.customerId ? (
               complete ? (
@@ -187,21 +207,51 @@ const PostDetail = () => {
 
           <p className="post-desc">{post.desc}</p>
           <p className="post-tags">
-            {moodTags.map(tag => 
-              <Link to={`/post/search?type=tag&tagname=${tag.name}&tagid=${tag.moodtagId}`}>
+            {moodTags.map((tag) => (
+              <Link
+                to={`/post/search?type=tag&tagname=${tag.name}&tagid=${tag.moodtagId}`}
+              >
                 <Tag color="lime">#{tag.name}</Tag>
-              </Link>)}
+              </Link>
+            ))}
           </p>
           <p className="post-create_at">{changeDateFormat(post.createAt)}</p>
-
-          {myPost ? (
-            <>
-              <Button type="primary" onClick={editPost} style={{marginRight: '8px'}}>수정</Button>
-              <Button type="danger" onClick={deletePost}>삭제</Button>
-            </>
-          ) : null}
-
           <Divider />
+          <div className="post-detail-btns">
+            {myPost ? (
+              <>
+                <Button
+                  type="primary"
+                  onClick={editPost}
+                  style={{ marginRight: "8px" }}
+                >
+                  수정
+                </Button>
+                <Button type="danger" onClick={deletePost}>
+                  삭제
+                </Button>
+              </>
+            ) : like ? (
+              <Tooltip title="좋아요 취소">
+                <Button
+                  type="primary"
+                  danger
+                  shape="circle"
+                  onClick={clickLikeButton}
+                  icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                />
+              </Tooltip>
+            ) : (
+              <Tooltip title="좋아요">
+                <Button
+                  danger
+                  shape="circle"
+                  onClick={clickLikeButton}
+                  icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                />
+              </Tooltip>
+            )}
+          </div>
         </div>
       )}
     </div>
