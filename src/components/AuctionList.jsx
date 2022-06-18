@@ -15,6 +15,7 @@ const AuctionList = ({ data, id }) => {
                 title={item.title}
                 description={item.desc}
                 imgSrc={item.imageUrl}
+                status={item.status}
               />
             ))
         : data.map((item) => (
@@ -25,6 +26,7 @@ const AuctionList = ({ data, id }) => {
               title={item.title}
               description={item.desc}
               imgSrc={item.imageUrl}
+              status={item.status}
             />
           ))}
     </div>

@@ -55,7 +55,13 @@ const AuctionListPage = () => {
 							</Link> 
 							: null
 						}
-            <AuctionList data={auctions} id={categId} />
+            <AuctionList 
+            data={auctions.sort((a, b) => {
+                if(a.status > b.status) return -1;
+                if(a.status === b.status) return 0;
+                if(a.status < b.status) return 1;
+              })} 
+            id={categId} />
           </div>
         </>
       )}
