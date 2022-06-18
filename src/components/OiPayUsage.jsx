@@ -72,7 +72,7 @@ const OiPayUsage = () => {
             <div className="oipay-history-title">
               <p>오이페이 사용내역 [최신순]</p>
               <Typography.Text type="danger">
-                [잔액] {customer ? customer.oiPay : null}
+                [잔액] {customer ? customer.oiPay.toLocaleString('ko-KR') : null}
               </Typography.Text>
             </div>
           }
@@ -95,7 +95,7 @@ const OiPayUsage = () => {
                   ) : (
                     <Typography.Text type="success">[충전]</Typography.Text>
                   )}
-                  <span className="amount-text">{item.amount}원</span>
+                  <span className="amount-text">{item.amount.toLocaleString('ko-KR')}원</span>
                   <Text code>{mSecToDate(item.createAt)}</Text>
                 </List.Item>
               );
