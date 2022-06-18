@@ -250,12 +250,12 @@ const PostWrite = () => {
           label="사진"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[
-            {
-              required: true,
-              message: "이미지를 업로드하세요!",
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "이미지를 업로드하세요!",
+          //   },
+          // ]}
         >
           {/* <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
