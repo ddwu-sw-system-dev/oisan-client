@@ -104,7 +104,6 @@ const PostWrite = () => {
     file,
     image
   ) => {
-
     const frm = new FormData();
     frm.append("customerId", customer.customerId);
     frm.append("image", image);
@@ -118,25 +117,27 @@ const PostWrite = () => {
     frm.append("tagList", tags);
 
     await axios
-      .post("http://localhost:8080/post/new", 
-      // {
-      //   customerId: customer.customerId,
-      //   categId: categId,
-      //   title: title,
-      //   desc: desc,
-      //   price: price,
-      //   imageUrl: file,
-      //   width: width,
-      //   height: height,
-      //   depth: depth,
-      //   tagList: tags,
-      // }
-      frm,
-      {
-        headers: {
-          'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundarynHlbq58vtkmKcQMl"
+      .post(
+        "http://localhost:8080/post/new",
+        // {
+        //   customerId: customer.customerId,
+        //   categId: categId,
+        //   title: title,
+        //   desc: desc,
+        //   price: price,
+        //   imageUrl: file,
+        //   width: width,
+        //   height: height,
+        //   depth: depth,
+        //   tagList: tags,
+        // }
+        frm,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data; boundary=----WebKitFormBoundarynHlbq58vtkmKcQMl",
+          },
         }
-      }
       )
       .then((response) => {
         console.log(response.data);
@@ -155,8 +156,8 @@ const PostWrite = () => {
       const width = getFieldValue(["width"]);
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
-      const file = getFieldValue(['picture']);
-      const image = document.getElementById('file').files[0];
+      const file = getFieldValue(["picture"]);
+      const image = document.getElementById("file").files[0];
 
       const response = await writePost(
         categId,
@@ -249,12 +250,12 @@ const PostWrite = () => {
           label="사진"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: "이미지를 업로드하세요!",
-          //   },
-          // ]}
+          rules={[
+            {
+              required: true,
+              message: "이미지를 업로드하세요!",
+            },
+          ]}
         >
           {/* <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
