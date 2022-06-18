@@ -93,7 +93,7 @@ const PostWrite = () => {
 
   const editPost = async () => {
     const response = await axios.get(
-      `http://localhost:8080/post/edit?postId=${id}`
+      `http://localhost:8080/post?postId=${id}`
     );
     setPostContent(response.data);
     console.log(response.data);
