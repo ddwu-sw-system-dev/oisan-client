@@ -39,8 +39,6 @@ const PostDetail = () => {
     }
     setLikeNum(response.data.likePost.length);
 
-    // console.log(response.data);
-
     //TODO: tags
     const tagResponse = await axios.get(
       `http://localhost:8080/post/tag/list?postId=${id}`
@@ -164,7 +162,6 @@ const PostDetail = () => {
     await axios
       .get(`http://localhost:8080/post/like/${id}/${loginCustomer.customerId}`)
       .then((response) => {
-        console.log("라이크", response.data);
         setLike((prev) => !prev);
       });
   };

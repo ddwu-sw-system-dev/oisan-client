@@ -8,6 +8,7 @@ import {
   Pagination,
   Avatar,
   Tooltip,
+  Image,
 } from "antd";
 import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
@@ -20,15 +21,10 @@ import MyWinningAuction from './../components/MyWinningAuction';
 const { Meta } = Card;
 const { TabPane } = Tabs;
 
-const gridStyle = {
-  width: "50%",
-  textAlign: "center",
-  height: "10rem",
-};
-
 function MyPage() {
   const [customer, setCustomer] = useState();
   const [posts, setPosts] = useState([]);
+  const [likePostList, setLikePostList] = useState([]);
 
   const [totalPage, setTotalPage] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -45,6 +41,19 @@ function MyPage() {
       setTotalPage(response.data.length / pageSize);
       setMinIndex(0);
       setMaxIndex(pageSize);
+    }
+  };
+
+  const getLikePostList = async () => {
+    if (customer) {
+      await axios
+        .get(
+          `http://localhost:8080/customers/likepost/list?customerId=${customer.customerId}`
+        )
+        .then((response) => {
+          console.log("라이크 포스트 리스트", response.data);
+          setLikePostList(response.data);
+        });
     }
   };
 
@@ -65,6 +74,7 @@ function MyPage() {
 
   useEffect(() => {
     getPostList();
+    getLikePostList();
   }, [customer]);
 
   return (
@@ -142,11 +152,27 @@ function MyPage() {
             </div>
           </TabPane>
           <TabPane tab="좋아요" key="2">
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
+            <Card>
+              {likePostList.map((post) => {
+                console.log(post);
+                return (
+                  <Card.Grid
+                    style={{
+                      width: "50%",
+                      textAlign: "center",
+                      height: "10rem",
+                      backgroundImage: `url(https://oisan.s3.ap-northeast-2.amazonaws.com/${post.imageUrl})`,
+                      backgroundSize: "cover",
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {post.title}
+                  </Card.Grid>
+                );
+              })}
+            </Card>
           </TabPane>
           <TabPane tab="채팅방" key="3">
             <ChatRoomList />
