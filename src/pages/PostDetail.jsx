@@ -21,13 +21,25 @@ const PostDetail = () => {
 
   const [complete, setComplete] = useState(1);
   const [like, setLike] = useState();
+  const [likeNum, setLikeNum] = useState();
 
   const getPostData = async () => {
     const response = await axios.get(`http://localhost:8080/post?postId=${id}`);
 
     setPost(response.data);
     setComplete(response.data.status);
-    setLike(Boolean(response.data.likePost.length));
+
+    if (loginCustomer) {
+      response.data.likePost.map((like) => {
+        if (like.customerId === loginCustomer.customerId) {
+          setLike(true);
+        }
+        return 0;
+      });
+    }
+    setLikeNum(response.data.likePost.length);
+
+    // console.log(response.data);
 
     //TODO: tags
     const tagResponse = await axios.get(
@@ -220,16 +232,27 @@ const PostDetail = () => {
           <div className="post-detail-btns">
             {myPost ? (
               <>
-                <Button
-                  type="primary"
-                  onClick={editPost}
-                  style={{ marginRight: "8px" }}
-                >
-                  수정
-                </Button>
-                <Button type="danger" onClick={deletePost}>
-                  삭제
-                </Button>
+                <div>
+                  <Tooltip title={`좋아요 ${likeNum}`}>
+                    <Button
+                      danger
+                      shape="circle"
+                      icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                    />
+                  </Tooltip>
+                </div>
+                <div>
+                  <Button
+                    type="primary"
+                    onClick={editPost}
+                    style={{ marginRight: "8px" }}
+                  >
+                    수정
+                  </Button>
+                  <Button type="danger" onClick={deletePost}>
+                    삭제
+                  </Button>
+                </div>
               </>
             ) : like ? (
               <Tooltip title="좋아요 취소">
