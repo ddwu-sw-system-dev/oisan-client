@@ -33,7 +33,7 @@ function MyPage() {
   const [current, setCurrent] = useState(1);
   const [minIndex, setMinIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
-  const pageSize = 10;
+  const pageSize = 5;
 
   const getPostList = async () => {
     if (customer) {
