@@ -10,15 +10,20 @@ import { Link } from "react-router-dom";
 const PostListPage = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
 
   const getPostData = async () => {
     const response = await axios.get(`http://localhost:8080/post/list`);
     setPosts(response.data);
     setLoading(false);
   };
+  
 
   useEffect(() => {
     getPostData();
+    if(sessionStorage.getItem("customer") !== null) {
+      setIsLogin(true);
+    }
   }, []);
 
   const antIcon = (
@@ -45,9 +50,10 @@ const PostListPage = () => {
         <>
           <Category getCategId={getCategId} />
           <div className="post-list-wrapper">
+            {isLogin ? 
             <Link to="/post/write">
               <Button>글 작성</Button>
-            </Link>
+            </Link> : null}
             <PostList data={posts} id={categId} />
           </div>
         </>

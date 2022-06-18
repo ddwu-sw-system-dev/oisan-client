@@ -115,6 +115,7 @@ const PostWrite = () => {
     frm.append("width", width);
     frm.append("height", height);
     frm.append("depth", depth);
+    frm.append("tagList", tags);
 
     await axios
       .post("http://localhost:8080/post/new", 
@@ -296,7 +297,7 @@ const PostWrite = () => {
         >
           <InputNumber />
         </Form.Item>
-        {/* <Form.Item label="태그" name="tagList">
+        <Form.Item label="태그" name="tagList">
           {tags.map((tag, index) => {
             if (editInputIndex === index) {
               return (
@@ -368,7 +369,7 @@ const PostWrite = () => {
           <Button type="primary" onClick={onCheck}>
             작성
           </Button>
-        </Form.Item> */}
+        </Form.Item>
       </Form>
     </div>
   );

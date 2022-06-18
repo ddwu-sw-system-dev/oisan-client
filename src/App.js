@@ -20,6 +20,7 @@ import OiPayUsage from "./components/OiPayUsage";
 import Signup from "./pages/Signup";
 import AuctionWrite from "./pages/AuctionWrite";
 import AuctionEdit from "./pages/AuctionEdit";
+import SearchListPage from './pages/SearchListPage';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/auction/:id" element={<AuctionDetail />} />
         <Route path="/auction/write" element={<AuctionWrite />} />
         <Route path="/auction/edit/:id" element={<AuctionEdit />} />
+        <Route path="/post/search" element={<SearchListPage />} />
       </Routes>
     </BrowserRouter>
   );

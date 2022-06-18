@@ -11,7 +11,7 @@ import "./AuctionListPage.scss";
 const AuctionListPage = () => {
   const [loading, setLoading] = useState(true);
   const [auctions, setAuctions] = useState([]);
-	const { isLogin } = useExist();
+	const { loginCustomer } = useExist();
 
   const getAuctionsData = async () => {
     const response = await axios.get(
@@ -49,7 +49,7 @@ const AuctionListPage = () => {
         <>
           <Category getCategId={getCategId} />
           <div className="auction-list-wrapper">
-						{isLogin ? 
+						{loginCustomer ? 
 							<Link to="/auction/write">
 								<Button>경매 새 글 작성</Button>
 							</Link> 
