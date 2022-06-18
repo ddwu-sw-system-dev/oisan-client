@@ -15,7 +15,7 @@ const Post = (props) => {
 				className="post-item"
 				hoverable
 				style={{ width: 240 }}
-				cover={<img alt="가구 사진" src={imgSrc} />}
+				cover={<img alt="가구 사진" src={"https://oisan.s3.ap-northeast-2.amazonaws.com/post/"+imgSrc} />}
 			>
 				<Card.Meta title={title} description={description.length > 12 ? description.slice(0, 12) + "..." : description} />
 			</Card>
