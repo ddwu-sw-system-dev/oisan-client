@@ -100,20 +100,43 @@ const PostWrite = () => {
     price,
     width,
     height,
-    depth
+    depth,
+    file,
+    image
   ) => {
+
+    const frm = new FormData();
+    frm.append("customerId", customer.customerId);
+    frm.append("image", image);
+    frm.append("categId", categId);
+    frm.append("title", title);
+    frm.append("desc", desc);
+    frm.append("price", price);
+    frm.append("width", width);
+    frm.append("height", height);
+    frm.append("depth", depth);
+
     await axios
-      .post("http://localhost:8080/post/new", {
-        customerId: customer.customerId,
-        categId: categId,
-        title: title,
-        desc: desc,
-        price: price,
-        imageUrl: null,
-        width: width,
-        height: height,
-        depth: depth,
-      })
+      .post("http://localhost:8080/post/new", 
+      // {
+      //   customerId: customer.customerId,
+      //   categId: categId,
+      //   title: title,
+      //   desc: desc,
+      //   price: price,
+      //   imageUrl: file,
+      //   width: width,
+      //   height: height,
+      //   depth: depth,
+      //   tagList: tags,
+      // }
+      frm,
+      {
+        headers: {
+          'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundarynHlbq58vtkmKcQMl"
+        }
+      }
+      )
       .then((response) => {
         console.log(response.data);
         document.location.href = `/post`;
@@ -131,6 +154,8 @@ const PostWrite = () => {
       const width = getFieldValue(["width"]);
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
+      const file = getFieldValue(['picture']);
+      const image = document.getElementById('file').files[0];
 
       const response = await writePost(
         categId,
@@ -139,7 +164,9 @@ const PostWrite = () => {
         price,
         width,
         height,
-        depth
+        depth,
+        file,
+        image
       );
 
       console.log("Success:", values, response);
@@ -153,6 +180,7 @@ const PostWrite = () => {
     <div className="post-write-section">
       <Divider>글 작성</Divider>
       <Form
+        enctype="multipart/form-data"
         form={form}
         labelCol={{
           span: 4,
@@ -227,9 +255,10 @@ const PostWrite = () => {
           //   },
           // ]}
         >
-          <Upload name="logo" action="/upload.do" listType="picture">
+          {/* <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
-          </Upload>
+          </Upload> */}
+          <input type="file" name="file" id="file" />
         </Form.Item>
         <Form.Item
           label="너비"
@@ -329,7 +358,7 @@ const PostWrite = () => {
               <PlusOutlined /> New Tag
             </Tag>
           )}
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           wrapperCol={{
             offset: 4,
@@ -339,7 +368,7 @@ const PostWrite = () => {
           <Button type="primary" onClick={onCheck}>
             작성
           </Button>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </div>
   );

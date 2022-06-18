@@ -141,7 +141,7 @@ const PostDetail = () => {
         <Spin indicator={antIcon} />
       ) : (
         <div className="content-wrapper">
-          <Image src={post.imageUrl} />
+          <Image src={"https://oisan.s3.ap-northeast-2.amazonaws.com/post/" + post.imageUrl} />
           <div className="post-user-info">
             <div className="avatar">
               <Avatar shape="square" icon={<UserOutlined />} />

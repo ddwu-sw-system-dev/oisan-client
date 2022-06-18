@@ -243,7 +243,7 @@ const PostWrite = () => {
         >
           <InputNumber />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="picture"
           label="사진"
           valuePropName="fileList"
@@ -258,7 +258,7 @@ const PostWrite = () => {
           <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="너비"
           name="width"
