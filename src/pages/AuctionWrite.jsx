@@ -111,19 +111,38 @@ const AuctionWrite = () => {
     price,
     width,
     height,
-    depth
+    depth,
+    file,
+    image
   ) => {
+    const frm = new FormData();
+    frm.append("image", image);
+    frm.append("categId", categId);
+    frm.append("title", title);
+    frm.append("desc", desc);
+    frm.append("price", price);
+    frm.append("width", width);
+    frm.append("height", height);
+    frm.append("depth", depth);
+
     await axios
-      .post(`http://localhost:8080/auction/create?customerId=${customer.customerId}`, {
-        // customerId: customer.customerId,
-        categoryId: categId,
-        title: title,
-        desc: desc,
-        price: price,
-        imageUrl: "",
-        width: width,
-        height: height,
-        depth: depth,
+      .post(`http://localhost:8080/auction/create?customerId=${customer.customerId}`, frm
+      // {
+      //   // customerId: customer.customerId,
+      //   categoryId: categId,
+      //   title: title,
+      //   desc: desc,
+      //   price: price,
+      //   imageUrl: file,
+      //   width: width,
+      //   height: height,
+      //   depth: depth,
+      // }
+      , {
+        headers: {
+          // 'Content-Type': 'multipart/form-data'
+          'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundarynHlbq58vtkmKcQMl"
+        }
       })
       .then((response) => {
         console.log(response.data);
@@ -143,6 +162,8 @@ const AuctionWrite = () => {
       const width = getFieldValue(["width"]);
       const height = getFieldValue(["height"]);
       const depth = getFieldValue(["depth"]);
+      const file = getFieldValue(['picture']);
+      const image = document.getElementById('file').files[0];
 
       const response = await writePost(
         categId,
@@ -151,7 +172,9 @@ const AuctionWrite = () => {
         price,
         width,
         height,
-        depth
+        depth,
+        file,
+        image
       );
 
       console.log("Success:", values, response);
@@ -165,6 +188,7 @@ const AuctionWrite = () => {
     <div className="auction-write-section">
       <Divider>글 작성</Divider>
       <Form
+        encType="multipart/form-data"
         form={form}
         labelCol={{
           span: 4,
@@ -239,9 +263,10 @@ const AuctionWrite = () => {
           //   },
           // ]}
         >
-          <Upload name="logo" action="/upload.do" listType="picture">
+          {/* <Upload name="logo" action="/upload.do" listType="picture">
             <Button icon={<UploadOutlined />}>Click to upload</Button>
-          </Upload>
+          </Upload> */}
+          <input type="file" name="file" id="file" />
         </Form.Item>
         <Form.Item
           label="너비"
