@@ -129,11 +129,16 @@ const PostWrite = () => {
     height,
     depth
   ) => {
+    // category 코드로 바꾸기 (setFieldValue 할때 숫자->문자로 변하는 경우가 있으므로)
+		let convertCategory;
+		if(isNaN(categId)) convertCategory = categList.indexOf(categId);
+		else convertCategory = categId;
+
     await axios
       .put("http://localhost:8080/post/edit", {
         postId: id,
         customerId: customer.customerId,
-        categId: categId,
+        categId: convertCategory,
         title: title,
         desc: desc,
         price: price,

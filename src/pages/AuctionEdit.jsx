@@ -136,16 +136,15 @@ const AuctionWrite = () => {
 		
     await axios
       .put(`http://localhost:8080/auction/${id}`, {
-        // postId: id,
-        customerId: customer.customerId,
-        categoryId: convertCategory,
+        auctionId: id,
         title: title,
         desc: desc,
-        price: price,
-        imageUrl: null,
+        image: null,
+        categId: convertCategory,
         width: width,
         height: height,
         depth: depth,
+        price: price,
       })
       .then((response) => {
         console.log(response.data);
