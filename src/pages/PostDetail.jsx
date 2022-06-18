@@ -217,7 +217,6 @@ const PostDetail = () => {
           </p>
           <p className="post-create_at">{changeDateFormat(post.createAt)}</p>
           <Divider />
-          {console.log("좋아요 여부", like)}
           <div className="post-detail-btns">
             {myPost ? (
               <>
