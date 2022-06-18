@@ -128,12 +128,19 @@ const AuctionDetail = () => {
   };
 
   const handleOk = async () => {
-    setModalText('The modal will be closed after two seconds');
+    // setModalText('The modal will be closed after two seconds');
     setConfirmLoading(true);
 
     try {
 			const values = await validateFields();
 			const amount = getFieldValue(['price']);
+
+      if(loginCustomer.oiPay < amount) {
+        setConfirmLoading(false);
+        setIsModalVisible(false);
+        message.error("오이페이 잔액이 부족합니다. 충전 후 입찰해주세요.");
+        return;
+      }
 
       const response = await axios.post(`http://localhost:8080/bidding/${auction.auctionId}?price=${amount}&customerId=${loginCustomer.customerId}`);
 			console.log('Success:', values, response); //성공코드 살피기
@@ -229,7 +236,7 @@ const AuctionDetail = () => {
               return (
                 <List.Item>
                   <Typography.Text type="secondary">[입찰가]</Typography.Text>
-                  <span className="amount-text">{item.price}원</span>
+                  <span className="amount-text">{item.price.toLocaleString('ko-KR')}원</span>
                   <Text code>{mSecToDate(item.createAt)}</Text>
                 </List.Item>
               );
@@ -267,11 +274,11 @@ const AuctionDetail = () => {
               </tr>
               <tr>
                 <td>시작 가격</td>
-                <td>{auction.startBid}</td>
+                <td>{auction.startBid.toLocaleString('ko-KR')}원</td>
               </tr>
               <tr>
                 <td>현재 가격</td>
-                <td>{auction.winningBid}</td>
+                <td>{auction.winningBid.toLocaleString('ko-KR')}원</td>
               </tr>
               </tbody>
             </StyledTable>
@@ -284,8 +291,9 @@ const AuctionDetail = () => {
             ) 
             : <Button
                 onClick={showModal}
+                disabled={!auction.status}
               >
-                입찰하기
+                {auction.status ? '입찰하기' : '마감된 경매입니다'}
               </Button>
             }
             {biddingModal}

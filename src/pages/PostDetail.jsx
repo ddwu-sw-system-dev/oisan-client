@@ -222,6 +222,7 @@ const PostDetail = () => {
           <p className="post-tags">
             {moodTags.map((tag) => (
               <Link
+                key={tag.moodtagId}
                 to={`/post/search?type=tag&tagname=${tag.name}&tagid=${tag.moodtagId}`}
               >
                 <Tag color="lime">#{tag.name}</Tag>

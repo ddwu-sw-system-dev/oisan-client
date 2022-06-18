@@ -15,6 +15,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import ChatRoomList from "./ChatRoomList";
 import OiPayUsage from "./../components/OiPayUsage";
+import MyWinningAuction from './../components/MyWinningAuction';
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -152,6 +153,9 @@ function MyPage() {
           </TabPane>
           <TabPane tab="오이페이 사용내역" key="4">
             <OiPayUsage />
+          </TabPane>
+          <TabPane tab="낙찰받은 경매" key="5">
+            <MyWinningAuction />
           </TabPane>
         </Tabs>
       </div>
